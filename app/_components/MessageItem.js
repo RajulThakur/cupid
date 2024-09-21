@@ -1,9 +1,9 @@
-import { Avatar } from "@mui/material";
+import StyledAvatar from "./StyledAvatar";
 
 function MessageItem() {
   return (
     <section className="flex items-center gap-4 rounded-lg bg-accent-tint-900 px-4 py-5">
-      <Avatar sx={{ width: 56, height: 56 }} />
+      <StyledAvatar alt="Priyanka" style={{width:"56px",height:"56px"}}/>
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold tracking-wide">Priyanka</p>
