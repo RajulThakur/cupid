@@ -12,11 +12,11 @@ function Direct() {
           <div className="w-auto max-w-xs rounded-l-2xl rounded-tr-2xl bg-accent-tint-0 px-4 py-3 text-base">
             <p className="font-semibold text-accent-shade-900">You</p>
             <div className="max-h-auto pr-4 text-base leading-snug text-accent-shade-1000">
-              Okay, then let's divide the presentation into a few main sections:
+              Okay, then  divide the presentation into a few main sections:
               introduction, product description, features and benefits, use
-              cases, and conclusion. Okay, then let's divide the presentation
+              cases, and conclusion. Okay, then  divide the presentation
               into a few main sections: introduction, product description,
-              features and benefits, use cases, and conclusion.Okay, then let's
+              features and benefits, use cases, and conclusion.Okay, then 
               divide the presentation into a few main sections: introduction,
               product description, features and benefits, use cases, and
               conclusion.Okay, then divid
@@ -37,11 +37,11 @@ function Direct() {
           <div className="w-auto max-w-xs rounded-l-2xl rounded-tr-2xl bg-foreground px-4 py-3 text-base">
             <p className="font-semibold text-accent-tint-0">Priyanka</p>
             <div className="max-h-auto pr-4 text-base leading-snug text-background">
-              Okay, then let's divide the presentation into a few main sections:
+              Okay, then  divide the presentation into a few main sections:
               introduction, product description, features and benefits, use
-              cases, and conclusion. Okay, then let's divide the presentation
+              cases, and conclusion. Okay, then  divide the presentation
               into a few main sections: introduction, product description,
-              features and benefits, use cases, and conclusion.Okay, then let's
+              features and benefits, use cases, and conclusion.Okay, then 
               divide the presentation into a few main sections: introduction,
               product description, features and benefits, use cases, and
               conclusion.Okay, then divid
