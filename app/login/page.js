@@ -10,6 +10,7 @@ function SigninPage() {
         <h1 className="from-accent-tint-900 text-7xl font-semibold tracking-wide">
           Cupid
         </h1>
+        <input type="text" hidden aria-hidden defaultValue="signup" name="form-type"/>
         <span className="font-semibold text-accent-tint-700">Continue with the Email</span>
         <InputField label="Email" />
         <PasswordField />

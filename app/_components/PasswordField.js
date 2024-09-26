@@ -3,7 +3,7 @@ import { FunctionsSharp, Visibility, VisibilityOff } from "@mui/icons-material";
 import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 import { useState } from "react";
 
-function PasswordField() {
+function PasswordField({name}) {
   const [showPassword, setshowPassword] = useState(false);
   function handleClick() {
     setshowPassword((curr) => (curr = !curr));
@@ -17,6 +17,7 @@ function PasswordField() {
       <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
       <OutlinedInput
         id='outlined-adornment-password'
+        name={name}
         type={showPassword ? "text" : "password"}
         endAdornment={
           <InputAdornment position='end'>

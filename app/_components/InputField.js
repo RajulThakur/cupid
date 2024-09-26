@@ -5,6 +5,7 @@ function InputField({ label }) {
     <TextField
       id='outlined-basic'
       label={label}
+      name={label}
       variant='outlined'
       fullWidth
     />
