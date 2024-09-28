@@ -1,6 +1,7 @@
+import { createTheme, ThemeProvider } from "@mui/material";
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import localFont from "next/font/local";
 import "./globals.css";
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -16,14 +17,11 @@ export const metadata = {
   title: "Cupid",
   description: "Messenger app to talk between people",
 };
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={``}
-      >
-        {children}
+      <body>
+        <main>{children}</main>
       </body>
     </html>
   );

@@ -9,7 +9,21 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    select:false
+  },
+  lastName: {
+    type: String,
+  },
+  firstName: {
+    type: String,
+  },
+  gender: {
+    type: String,
+  },
+  relationshipStatus: {
+    type: String,
+  },
+  bio: {
+    type: String,
   },
 });
 
