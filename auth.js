@@ -1,10 +1,8 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-
-import getUserByEmail from "./_actions/FindUserByEmail";
+import bcrypt from "bcryptjs";
 import { connectToDatabase } from "./lib/database";
 import UserModel from "./models/User";
-import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [

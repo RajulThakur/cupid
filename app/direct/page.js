@@ -1,10 +1,12 @@
 import { Avatar } from "@mui/material";
+import SignOut from "../_components/SignOut";
 
 function Direct() {
   return (
     <div className="flex h-svh flex-col py-2">
-      <nav>
+      <nav className="flex justify-between">
         <Avatar />
+        <SignOut/>
       </nav>
       <div className="flex flex-1 flex-col gap-7 overflow-y-scroll">
         {/* Me */}

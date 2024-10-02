@@ -2,20 +2,29 @@
 
 import getUserByEmail from "@/_actions/FindUserByEmail";
 import { createUser } from "@/lib/data-service";
-import { signInSchema } from "@/lib/zod";
+import { signUpSchema } from "@/lib/zod";
 import bcrypt from "bcryptjs";
 
 export default async function handleSignUp(formData) {
   try {
-    const formEmail = formData.get("Email");
-    const formPassword = formData.get("password");
-    const { formEmail: email, formPassword: password } =
-      await signInSchema.parseAsync({ formEmail, formPassword });
-    const hashPass = await bcrypt.hash(password, 7);
-    await createUser({ email, password: hashPass });
-    const {_id}= await getUserByEmail(email);
-    return _id;
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const username = formData.get("username");
+    const {
+      email: Email,
+      password: Password,
+      username: Username,
+    } = await signUpSchema.parseAsync({
+      email,
+      password,
+      username
+    });
+    const hashPass = await bcrypt.hash(Password, 7);
+    await createUser({ email: Email, password: hashPass, username: Username });
+    const { _id } = await getUserByEmail(email);
+    console.log(_id.toString());
+    return _id.toString();
   } catch (error) {
-    console.log(error.message);
+    return error;
   }
 }

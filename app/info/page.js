@@ -1,11 +1,11 @@
 import handleInfo from "@/actions/handleInfo";
 import { FormControl, TextField } from "@mui/material";
+import { redirect } from "next/navigation";
 import GenderSel from "../_components/GenderSel";
 import InputField from "../_components/InputField";
 import ProfileEdit from "../_components/ProfileEdit";
 import RelSelect from "../_components/RelSelect";
 import SignUpNav from "../_components/SignUpNav";
-import { redirect } from "next/navigation";
 
 function SignupPage() {
   // Get headers
