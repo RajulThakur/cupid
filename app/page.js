@@ -1,7 +1,9 @@
 import { auth } from "@/auth";
 
 export default async function Home() {
-  const  email  = await auth();
-  console.log(email);
-  return <div className=""></div>;
+  const  session  = await auth();
+  console.log(session);
+  return <div className="">
+    
+  </div>;
 }

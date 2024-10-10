@@ -2,9 +2,15 @@ import InboxMsgContainer from "@/app/_components/InboxMsgContainer";
 
 function DirectMessagesPage() {
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">Direct Messages</h2>
+    <div className="gap-2 flex flex-col">
       <InboxMsgContainer/>
+      <InboxMsgContainer/>
+      <InboxMsgContainer/> 
+      <InboxMsgContainer/> 
+      <InboxMsgContainer/> 
+      <InboxMsgContainer/> 
+      <InboxMsgContainer/> 
+      <InboxMsgContainer/> 
     </div>
   );
 }

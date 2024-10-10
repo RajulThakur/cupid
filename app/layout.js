@@ -1,6 +1,6 @@
-import { createTheme, ThemeProvider } from "@mui/material";
-import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import localFont from "next/font/local";
+import { SessionProvider } from "next-auth/react"
+
 import "./globals.css";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,8 +21,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        
-        <main>{children}</main>
+        <main>
+          <SessionProvider>
+            {children}
+          </SessionProvider>
+        </main>
       </body>
     </html>
   );

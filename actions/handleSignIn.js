@@ -1,16 +1,23 @@
 "use server";
 
 import { signIn } from "@/auth";
-import { signInSchema } from "@/lib/zod";
+import { CredentialsSignin } from "next-auth";
 
 export default async function handleSignIn(formData) {
-  const formEmail = formData.get("email");
-  const formPassword = formData.get("password");
-  const { formEmail: email, formPassword: password } =
-    await signInSchema.safeParseAsync({ formEmail, formPassword });
+  const email = formData.get("email");
+  const password = formData.get("password");
   try {
-    await signIn("credentials", { email, password });
+    await signIn(
+      "credentials",
+      {
+        email,
+        password,
+      },
+      { redirectTo: "/inbox/direct" },
+    );
   } catch (error) {
-    console.log(error.message);
+    const errorMessage =
+      error instanceof CredentialsSignin ? error.message : "An error occurred";
+    return { error: errorMessage };
   }
 }

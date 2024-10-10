@@ -1,40 +1,21 @@
-'use client';
-
-import { useState } from 'react';
+import InboxNav from "@/app/_components/InboxNav";
+import { auth } from "@/auth";
 import { MessageRounded } from "@mui/icons-material";
-import { usePathname } from 'next/navigation';
-import InboxNav from '@/app/_components/InboxNav';
-import InboxMsgContainer from '../_components/InboxMsgContainer';
+import { SessionProvider } from "next-auth/react";
 
-export default function InboxLayout({ children }) {
-  const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState(pathname === '/inbox/requests' ? 'requests' : 'direct');
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
+export default async function InboxLayout({ children }) {
+  const session = await auth();
+  console.log("session ->", session);
+  if (!session) return null;
   return (
-    <div className="relative h-svh flex gap-4 flex-col px-4">
-      <InboxNav activeTab={activeTab} onTabChange={handleTabChange} />
-      <div className="flex-grow overflow-auto">
-        {activeTab === 'direct' && pathname === '/inbox' && (
-          <div>
-            <h2 className="text-xl font-bold mb-4">Direct Messages</h2>
-            <InboxMsgContainer/>
-          </div>
-        )}
-        {activeTab === 'requests' && pathname === '/inbox/requests' && (
-          <div>
-            <h2 className="text-xl font-bold mb-4">Requests</h2>
-            {/* Add your requests content here */}
-          </div>
-        )}
-        {children}
-      </div>
+    <SessionProvider>
+      <div className="relative flex h-svh flex-col gap-4 px-4">
+      <InboxNav />
+      <div className="flex-grow overflow-auto">{children}</div>
       <button className="absolute bottom-0 right-0 -translate-x-1/2 -translate-y-full transform rounded-l-xl rounded-tr-xl bg-accent-tint-200 p-4">
         <MessageRounded sx={{ fill: "rgb(58 ,74, 50)" }} />
       </button>
     </div>
+    </SessionProvider>
   );
 }

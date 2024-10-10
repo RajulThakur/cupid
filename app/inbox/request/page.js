@@ -1,3 +1,9 @@
+import FriendRequest from "@/app/_components/FriendRequest";
+
 export default function RequestPage() {
-  return <div>RequestPage</div>;
+  return (
+    <div>
+      <FriendRequest />
+    </div>
+  );
 }
