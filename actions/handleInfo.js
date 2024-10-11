@@ -16,7 +16,9 @@ export default async function handleInfo(formData) {
   const formLastName = formData.get("lastName");
   const gender = formData.get("gender");
   const relationship = formData.get("relationshipStatus");
+  const image = formData.get("image");
   const bio = formData.get("bio");
+  console.log("image", image);
   const {
     formFirstName: firstName,
     formLastName: lastName,

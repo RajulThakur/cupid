@@ -16,7 +16,7 @@ function ImageUploadButton() {
   }
 
   return (
-    <button
+    <span
       className="bg-accent-tint-500 p-2 rounded-2xl absolute right-0 bottom-0 opacity-95"
       onClick={handleButtonClick}
     >
@@ -26,10 +26,9 @@ function ImageUploadButton() {
         className="absolute h-0 w-0 overflow-hidden"
         type="file"
         onChange={handleClick}
-        multiple
         accept="images/*"
       />
-    </button>
+    </span>
   );
 }
 

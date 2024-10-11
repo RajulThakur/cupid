@@ -40,7 +40,7 @@ function SignupPage() {
           placeholder="Something you like"
           variant="filled"
         />
-        <button className="w-full rounded-xl bg-accent-tint-700 py-3 text-xl font-semibold tracking-wider text-accent-shade-700">
+        <button type="submit" className="w-full rounded-xl bg-accent-tint-700 py-3 text-xl font-semibold tracking-wider text-accent-shade-700">
           Signup
         </button>
       </form>

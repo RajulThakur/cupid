@@ -22,7 +22,6 @@ export default async function handleSignUp(formData) {
     const hashPass = await bcrypt.hash(Password, 7);
     await createUser({ email: Email, password: hashPass, username: Username });
     const { _id } = await getUserByEmail(email);
-    console.log(_id.toString());
     return _id.toString();
   } catch (error) {
     return error;

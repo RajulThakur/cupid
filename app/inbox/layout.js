@@ -5,7 +5,6 @@ import { SessionProvider } from "next-auth/react";
 
 export default async function InboxLayout({ children }) {
   const session = await auth();
-  console.log("session ->", session);
   if (!session) return null;
   return (
     <SessionProvider>

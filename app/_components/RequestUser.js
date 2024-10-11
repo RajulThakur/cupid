@@ -9,7 +9,6 @@ export default function RequestUser({ user}) {
       body: JSON.stringify({ receiver: user._id }),
     });
     const data = await res.json();
-    console.log(data);
   }
   return (
     <li
