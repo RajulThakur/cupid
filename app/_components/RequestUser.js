@@ -3,12 +3,12 @@ import { PersonAddRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 
 export default function RequestUser({ user}) {
-  async function handleAccept() {
-    const res = await fetch("/api/friend-requests", {
+  async function handleRequest() {
+    const res = await fetch("/api/requests/create_request", {
       method: "POST",
       body: JSON.stringify({ receiver: user._id }),
     });
-    const data = await res.json();
+  
   }
   return (
     <li
@@ -23,7 +23,7 @@ export default function RequestUser({ user}) {
           <span className="text-accent-shade-500">{user.username}</span>
         </div>
       </div>
-      <button className="rounded-full p-2 text-accent-shade-700 transition-colors hover:bg-accent-tint-500" onClick={handleAccept}>
+      <button className="rounded-full p-2 text-accent-shade-700 transition-colors hover:bg-accent-tint-500" onClick={handleRequest  }>
         <PersonAddRounded  />
       </button>
     </li>

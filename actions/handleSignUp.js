@@ -22,6 +22,7 @@ export default async function handleSignUp(formData) {
     const hashPass = await bcrypt.hash(Password, 7);
     await createUser({ email: Email, password: hashPass, username: Username });
     const { _id } = await getUserByEmail(email);
+    await Friends.create({ userId: _id });
     return _id.toString();
   } catch (error) {
     return error;
