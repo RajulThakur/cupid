@@ -11,8 +11,8 @@ export async function GET(req) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { user } = session;
   const { email } = user;
-  const userId = await getUserIdByEmail(email);
   await connectToDatabase();
+  const userId = await getUserIdByEmail(email);
   const {friends} = await Friends.findOne({ userId });
   const friendData = await UserModel.find({_id:{$in:friends}}).select("username firstName lastName avatar");
   console.log("friendData", friendData);
