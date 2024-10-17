@@ -1,6 +1,5 @@
 import { signOut } from "@/auth";
 import { Logout } from "@mui/icons-material";
-import { redirect } from "next/navigation";
 
 function SignOut() {
   return (
