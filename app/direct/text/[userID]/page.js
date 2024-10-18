@@ -7,11 +7,11 @@ export default async function Page({params}) {
   await connectToDatabase();
   const session = await auth();
   const {_id,firstName,lastName,username} = await getUserByEmail(session.user.email);
-  const user = await getUserById(params.userID[0]);
+  const user = await getUserById(params.userID);
   const {firstName:friendFirstName,lastName:friendLastName,username:friendUsername} = user;
   return (
     <div>
-      <Direct userid={_id.toString()} name={`${friendFirstName} ${friendLastName}`} to={params.userID[0]}/>
+      <Direct userid={_id.toString()} name={`${friendFirstName} ${friendLastName}`} to={params.userID}/>
     </div>
   );
 }

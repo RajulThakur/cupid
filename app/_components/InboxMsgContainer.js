@@ -5,7 +5,7 @@ function InboxMsgContainer({ friend }) {
   const router = useRouter();
   return (
     <div className="flex flex-col" onClick={()=>{
-      router.push(`/inbox/direct/${friend._id}`);
+      router.push(`/direct/text/${friend._id}`);
     }}>
       <section className="flex items-center gap-4 rounded-lg bg-accent-tint-900 px-4 py-5">
         <StyledAvatar

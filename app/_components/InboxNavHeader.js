@@ -5,7 +5,7 @@ import { useState } from "react";
 
 function InboxNavHeader() {
   const pathname = usePathname();
-  const [active, setActive] = useState(pathname === "/inbox/request" ? 1 : pathname === "/inbox/voice" ? 2 : 0);
+  const [active, setActive] = useState(pathname === "/direct/menu/request" ? 1 : pathname === "/direct/menu/voice" ? 2 : 0);
   const router = useRouter();
   function TabButton({ children, handleClick, id }) {
     return (
@@ -24,7 +24,7 @@ function InboxNavHeader() {
           id={0}
           handleClick={() => {
             setActive(0);
-            router.push("/inbox/direct");
+            router.push("/direct/menu/inbox");
           }}
         >
           Chat
@@ -34,7 +34,7 @@ function InboxNavHeader() {
           id={1}
           handleClick={() => {
             setActive(1);
-            router.push("/inbox/request");
+            router.push("/direct/menu/request");
           }}
         >
           Request
@@ -44,7 +44,7 @@ function InboxNavHeader() {
           id={2}
           handleClick={() => {
             setActive(2);
-            router.push("/inbox/voice");
+            router.push("/direct/menu/voice");
           }}
         >
           Call
