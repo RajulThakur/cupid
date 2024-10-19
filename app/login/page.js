@@ -1,9 +1,9 @@
-import handleSignIn from "@/actions/handleSignIn";
+import handleSubmit from "@/actions/handleSubmit";
 import Link from "next/link";
 import InputField from "../_components/InputField";
+import LogoBold from "../_components/LogoBold";
 import PasswordField from "../_components/PasswordField";
 import SignUpNav from "../_components/SignUpNav";
-import LogoBold from "../_components/LogoBold";
 
 function SigninPage() {
   return (
@@ -11,7 +11,7 @@ function SigninPage() {
       <SignUpNav heading="Login" />
       <form
         className="flex flex-col items-center gap-5 px-7"
-        action={handleSignIn}
+        action={handleSubmit}
       >
         <h1 className="text-7xl font-semibold tracking-wide">
           <LogoBold />

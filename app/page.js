@@ -1,8 +1,10 @@
 import { auth } from "@/auth";
-
+import { redirect } from "next/navigation";
 export default async function Home() {
   const  session  = await auth();
-  return <div className="">
-    {session?.user?.email}
-  </div>;
+  if (!session) {
+    redirect("/api/auth/signin");
+  }else{
+    redirect("/direct/menu/inbox");
+  }
 }

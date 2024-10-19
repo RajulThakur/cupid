@@ -1,4 +1,10 @@
 "use client";
+import {
+  MicNoneOutlined,
+  MicNoneRounded,
+  PhotoOutlined,
+  SendRounded,
+} from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import MessageComponent from "./Message";
@@ -80,22 +86,31 @@ function Direct({ userid, to, name }) {
         <div ref={bottomAuto} />
       </div>
 
-      <div className="flex items-center justify-between gap-4">
+      <div className=" flex items-center justify-between gap-4 rounded-full shadow-sm bg-white px-4 py-2">
         <textarea
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
           value={value}
-          className="h-10 flex-1 resize-none rounded-lg px-8 py-2 focus:outline-none"
+          className="h-10 flex-1 resize-none px-8 py-2 focus:outline-none"
           placeholder="Type your message..."
           rows="2"
           maxLength="1000"
         />
-        <button
-          onClick={handleSubmit}
-          className="rounded-lg bg-accent-shade-900 px-4 py-2 text-background"
-        >
-          Send
-        </button>
+        {!value && (
+          <div className="flex items-center gap-2">
+            <MicNoneOutlined className="stroke-1" sx={{ fontSize: "2rem","&path":{strokeWidth:"0.5px"} }} />
+            <PhotoOutlined sx={{ fontSize: "2rem","&path":{strokeWidth:"0.5px"} }} />
+          </div>
+        )}
+        {value && (
+          <button
+            onClick={handleSubmit}
+            className="flex items-center gap-2 rounded-lg bg-accent-shade-900 px-4 py-2 text-background"
+          >
+            <span>Send </span>
+            <SendRounded />
+          </button>
+        )}
       </div>
     </div>
   );

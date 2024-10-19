@@ -10,5 +10,5 @@ export default middleware;
 */
 export const middleware = auth;
 export const config = {
-  matcher: ["/inbox/:path*"],
+  matcher: ["/direct/:path*"],
 };
