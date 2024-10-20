@@ -1,5 +1,5 @@
-function GetformatTime() {
-  const formattedTime = new Date().toLocaleTimeString("en-US", {
+function GetformatTime(date) {
+  const formattedTime = new Date(date).toLocaleTimeString("en-US", {
     //only show minutes and hours
     hour: "2-digit",
     minute: "2-digit",

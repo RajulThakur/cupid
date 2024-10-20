@@ -4,6 +4,7 @@ function MessageComponent({
   text,
   isYou = true,
   user = "You",
+  date
 }) {
   return (
     <div
@@ -19,7 +20,7 @@ function MessageComponent({
       <div className={`max-h-auto pr-4 text-base leading-snug ${isYou ? "text-accent-shade-1000" : "text-background"}`}>
         {text}
       </div>
-      <p className="mt-[1px] text-right text-accent-shade-400">{GetformatTime()}</p>
+      <p className="mt-[1px] text-right text-accent-shade-400">{GetformatTime(date)}</p>
     </div>
     {isYou && (
       <div className="self-end">

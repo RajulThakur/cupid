@@ -1,26 +1,33 @@
 "use client";
 import {
   MicNoneOutlined,
-  MicNoneRounded,
   PhotoOutlined,
-  SendRounded,
+  SendRounded
 } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import MessageComponent from "./Message";
 
-function Direct({ userid, to, name }) {
+function Direct({ data }) {
+  const { userid, myusername, friendusername, name, to } = data;
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState("");
   const [socket, setSocket] = useState(null);
   const bottomAuto = useRef(null);
-  console.log(name);
+  console.log(data.name);
+
+  // Connect to the server
   useEffect(() => {
     const isBrowser = typeof window !== "undefined";
     const newSocket = isBrowser ? new WebSocket("ws://localhost:8080") : null;
-
+    async function getMessages() {
+      const res = await fetch(`/api/messages?usernameA=${myusername}&usernameB=${friendusername}&user1=${userid}&user2=${to}`)
+      const data = await res.json()
+      setMessages(data.messages);
+    }
+    getMessages();
     newSocket.onopen = () => {
-      newSocket.send(JSON.stringify({ type: "connection", user: userid, to }));
+      newSocket.send(JSON.stringify({ type: "connection", user: userid, to,createdAt:new Date() }));
       console.log("Connected to the server");
     };
     setSocket(newSocket);
@@ -28,36 +35,54 @@ function Direct({ userid, to, name }) {
     return () => {
       newSocket.close();
     };
-  }, [userid, to]);
+  }, [userid, to, myusername, friendusername]);
 
+  // Receive messages from the server
   useEffect(() => {
     if (socket) {
       console.log(socket);
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        const { message, from } = data;
-        setMessages([...messages, { message, isYou: false, user: from }]);
+        const { message, from, msgType,createdAt } = data;
+        // Add the message to the messages array
+        setMessages([...messages, { message, isYou: false, user: from,createdAt }]);
       };
     }
   }, [messages, socket]);
 
+  // Scroll to the bottom of the messages
   useEffect(() => {
     bottomAuto.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (value.trim()) {
       // Prevent empty messages from being submitted
-      setMessages([...messages, { message: value, isYou: true }]);
+      setMessages([...messages, { text: value, isYou: true,from:userid,createdAt:new Date() }]);
+      // Send the message to the server
+      setValue("");
+      await fetch("/api/messages", {
+        method: "POST",
+        body: JSON.stringify({
+          usernameA: myusername,
+          usernameB: friendusername,
+          user1: userid,
+          user2: to,
+          from: userid,
+          text: value,
+          type: "text",
+        }),
+      });
       socket.send(
         JSON.stringify({
           type: "message",
           message: value,
           user: userid,
           to,
+          createdAt:new Date()
         }),
       );
-      setValue("");
+
     }
   };
 
@@ -77,10 +102,11 @@ function Direct({ userid, to, name }) {
       <div className="flex flex-1 flex-col gap-2 overflow-y-scroll">
         {messages.map((message, index) => (
           <MessageComponent
-            key={index}
-            text={message.message}
-            user={message.isYou ? "You" : name}
-            isYou={message.isYou}
+            key={message._id || index}
+            text={message.text}
+            user={message.from === userid ? "You" : name}
+            isYou={message.from === userid}
+            date={message.createdAt}
           />
         ))}
         <div ref={bottomAuto} />
