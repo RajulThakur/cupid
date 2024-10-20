@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        "not-found": "url('/images/background.svg')",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
