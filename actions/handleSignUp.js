@@ -3,6 +3,7 @@
 import getUserByEmail from "@/_actions/FindUserByEmail";
 import { createUser } from "@/lib/data-service";
 import { signUpSchema } from "@/lib/zod";
+import Friends from "@/models/Friends";
 import bcrypt from "bcryptjs";
 
 export default async function handleSignUp(formData) {

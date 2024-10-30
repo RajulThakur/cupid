@@ -8,7 +8,10 @@ function middleware(request) {
   
 export default middleware;
 */
-export const middleware = auth;
+export const middleware = function (request) {
+  const response = auth(request);
+  return response;
+};
 export const config = {
   matcher: ["/direct/:path*"],
 };

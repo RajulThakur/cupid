@@ -15,6 +15,5 @@ export async function GET(req) {
   const userId = await getUserIdByEmail(email);
   const {friends} = await Friends.findOne({ userId });
   const friendData = await UserModel.find({_id:{$in:friends}}).select("username firstName lastName avatar");
-  console.log("friendData", friendData);
   return NextResponse.json({friends:friendData});
 }

@@ -14,7 +14,6 @@ function Direct({ data }) {
   const [value, setValue] = useState("");
   const [socket, setSocket] = useState(null);
   const bottomAuto = useRef(null);
-  console.log(data.name);
 
   // Connect to the server
   useEffect(() => {
@@ -22,13 +21,12 @@ function Direct({ data }) {
     const newSocket = isBrowser ? new WebSocket("ws://localhost:8080") : null;
     async function getMessages() {
       const res = await fetch(`/api/messages?usernameA=${myusername}&usernameB=${friendusername}&user1=${userid}&user2=${to}`)
-      const data = await res.json()
+      const data = await res?.json()
       setMessages(data.messages);
     }
     getMessages();
     newSocket.onopen = () => {
       newSocket.send(JSON.stringify({ type: "connection", user: userid, to,createdAt:new Date() }));
-      console.log("Connected to the server");
     };
     setSocket(newSocket);
 
@@ -40,7 +38,7 @@ function Direct({ data }) {
   // Receive messages from the server
   useEffect(() => {
     if (socket) {
-      console.log(socket);
+  
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         const { message, from, msgType,createdAt } = data;

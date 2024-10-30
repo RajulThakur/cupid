@@ -7,7 +7,6 @@ function ImageUploadButton() {
 
   function handleClick(e) {
     // Access the selected files from the input
-    console.log(e.target.files);
   }
 
   function handleButtonClick() {

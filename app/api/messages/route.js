@@ -26,13 +26,11 @@ export async function GET(req) {
     userB: user2,
   });
   const data = isExist.messages.slice(-10);
-  console.log("data", data);
   return NextResponse.json({messages:data });
 }
 
 export async function POST(req) {
   const session = await auth();
-  console.log(session);
   if (!session?.user) throw new Error("Unauthorized");
   await connectToDatabase();
   const body = await req.json();
@@ -58,7 +56,7 @@ export async function POST(req) {
       userB: user2,
       messages: [{ from, text, type }],
     });
-    console.log("message", message);
+
   }
   isExist.messages.push({ from, text, type });
   await isExist.save();

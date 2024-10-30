@@ -3,7 +3,6 @@ import { CheckRounded, CloseRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 function FriendRequest({ request }) {
   async function handleAccept() {
-    console.log("request", request);
     const res = await fetch("/api/requests/add", {
       method: "POST",
       body: JSON.stringify({ sender: request._id }),

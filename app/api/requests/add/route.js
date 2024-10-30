@@ -1,3 +1,5 @@
+"use server";
+
 import { auth } from "@/auth";
 import { getUserIdByEmail } from "@/lib/data-service";
 import { connectToDatabase } from "@/lib/database";
@@ -11,14 +13,10 @@ export async function POST(req) {
   const { email } = user;
   const { sender } = await req.json();
   const receiver = await getUserIdByEmail(email);
-  console.log("sender", sender);
-  console.log("receiver", receiver);
   await connectToDatabase();
   
   const senderData = await Friends.findOneAndUpdate({ userId: sender }, { $push: { friends: receiver } }, { new: true });
   const receiverData = await Friends.findOneAndUpdate({ userId: receiver }, { $push: { friends: sender } }, { new: true });
-  console.log("senderData", senderData);
-  console.log("receiverData", receiverData);
   await Friends.updateOne({ userId: receiver }, { $pull: { requests: sender } });
   return NextResponse.json({ message: "Request added" }, { status: 200 });
 }

@@ -7,10 +7,8 @@ export async function POST(req) {
     const body = await req.json(); // In Next.js App Router, you parse the request body like this
     const { username } = body;
     if (!username) {
-      console.log("username not given");
       return NextResponse.json({ available: true }, { status: 200 });
     }
-    console.log("next cal");
     await connectToDatabase();
     const user = await User.findOne({ username });
 

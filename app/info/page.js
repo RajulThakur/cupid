@@ -7,9 +7,7 @@ import ProfileEdit from "../_components/ProfileEdit";
 import RelSelect from "../_components/RelSelect";
 import SignUpNav from "../_components/SignUpNav";
 
-function SignupPage() {
-  // Get headers
-
+function SignupPage({searchParams}) {
   return (
     <div className="flex h-svh flex-col items-center justify-center px-3 py-3">
       <SignUpNav heading="Info" />
@@ -18,7 +16,8 @@ function SignupPage() {
         action={async (formData) => {
           "use server";
           await handleInfo(formData);
-          redirect('/')
+          //redirect to lock page with id and setup true
+          redirect(`/lock?id=${searchParams.id}&setup=true`);
         }}
       >
         <ProfileEdit />

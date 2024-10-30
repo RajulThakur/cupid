@@ -10,7 +10,6 @@ import Username from "../_components/Username";
 async function handleClick(formdata) {
   "use server";
   const data = await handleSignUp(formdata);
-  console.log(data);
   redirect(`/info?id=${data}`);
 }
 

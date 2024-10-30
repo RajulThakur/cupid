@@ -1,3 +1,5 @@
+"use server";
+
 import { auth } from "@/auth";
 import { getUserIdByEmail } from "@/lib/data-service";
 import { connectToDatabase } from "@/lib/database";
@@ -11,8 +13,6 @@ export async function POST(req) {
   const { user } = session;
   const { email } = user;
   const { receiver } = await req.json();
-  console.log("receiver", receiver);
-  console.log("email", email);
 
   await connectToDatabase();
   const sender = await getUserIdByEmail(email);
@@ -32,7 +32,6 @@ export async function POST(req) {
     { $push: { requests: sender } },
     { new: true },
   ).select("requests");
-  console.log("requests", requests);
 
   return NextResponse.json(
     { message: "Request sent", status: "success" },

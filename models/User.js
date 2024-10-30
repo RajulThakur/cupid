@@ -30,6 +30,10 @@ const userSchema = new Schema({
   bio: {
     type: String,
   },
+  pin: {
+    type: String,
+    select: false,
+  },
 });
 
 const UserModel = models?.User || model("User", userSchema);

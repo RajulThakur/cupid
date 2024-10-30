@@ -5,7 +5,6 @@ function GetformatTime(date) {
     minute: "2-digit",
     hour12: true,
   });
-  console.log(formattedTime);
   return formattedTime;
 }
 export default GetformatTime;

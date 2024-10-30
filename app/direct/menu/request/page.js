@@ -8,7 +8,6 @@ export default function RequestPage() {
     async function fetchRequests() {
       const res = await fetch("/api/requests/friend_requests");
       const data = await res.json();
-      console.log("data", data);
       if (data.senderData) setRequests(data.senderData);
     }
     fetchRequests();

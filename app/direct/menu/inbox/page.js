@@ -9,7 +9,6 @@ function DirectMessagesPage() {
     async function fetchFriends() {
       const res = await fetch("/api/friends");
       const data = await res.json();
-      console.log(data);
       setFriends(data.friends);
     }
     fetchFriends();

@@ -24,7 +24,6 @@ function Username({ name, label }) {
         });
 
         const result = await response.json();
-        console.log(result);
         if (!result.available) setIsError(true);
       } catch (error) {
         console.error("Error checking username:", error);

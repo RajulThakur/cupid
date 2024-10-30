@@ -1,3 +1,5 @@
+"use server";
+
 import { auth } from "@/auth";
 import { getUserIdByEmail } from "@/lib/data-service";
 import { connectToDatabase } from "@/lib/database";
@@ -13,10 +15,8 @@ export async function GET(req) {
 
   await connectToDatabase();
   const id = await getUserIdByEmail(email);
-  console.log("id", id);
   const requests = await Friends.findOne({ userId: id })?.select("requests");
   const senderData = await UserModel.find({ _id: { $in: requests?.requests } }).select("username firstName lastName avatar");
-  console.log(senderData);
   return NextResponse.json({ senderData }, { status: 200 });
 }
 

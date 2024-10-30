@@ -1,9 +1,17 @@
 "use client";
 import { BackspaceRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
+import bcrypt from "bcryptjs";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 function LockPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const id = searchParams.get("id");
+  const setup = searchParams.get("setup");
+  const hashPin = searchParams.get("pin");
+  const isConfirm = searchParams.get("isconfirm");
   const [pin, setPin] = useState("");
   const input1 = useRef(null);
   const input2 = useRef(null);
@@ -25,10 +33,35 @@ function LockPage() {
       } else if (isFinite(e) && pin.length < 4) {
         inputRef[pin.length].current.focus();
         inputRef[pin.length].current.value = e;
-        setPin((prev) => prev + e);
+        setPin((prev) => {
+          const newPin = prev + e;
+          if (newPin.length === 4) {
+            setTimeout(async () => {
+              if (isConfirm) {
+                const isMatch = bcrypt.compareSync(newPin, hashPin);
+                if (isMatch) {
+                  await fetch(`/api/user`, {
+                    method: "PATCH",
+                    body: JSON.stringify({ pin: hashPin,id }),
+                  });
+                }
+              }
+              if (setup) {
+                const hashedPin = bcrypt.hashSync(newPin, 7);
+                router.push(`/lock?id=${id}&pin=${hashedPin}&isconfirm=true`);
+              }
+              setPin("");
+              inputRef.forEach((input) => {
+                input.current.value = "";
+              });
+              inputRef[3].current.blur();
+            }, 100);
+          }
+          return newPin;
+        });
       }
     },
-    [pin, inputRef]
+    [pin, inputRef, setup, id, isConfirm, hashPin, router],
   );
   useEffect(() => {
     function handleKeyDown(e) {
@@ -39,7 +72,7 @@ function LockPage() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleClick]);
-  
+
   return (
     <div className="flex h-svh flex-col justify-between px-3">
       <section className="flex flex-col gap-10">
