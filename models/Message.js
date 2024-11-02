@@ -15,13 +15,13 @@ const MessageSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
       },
-      text: {
+      message: {
         type: String,
         required: true,
       },
-      type: {
+      msgType: {
         type: String,
-        enum: ["text", "image"],
+        enum: ["text", "image", "audio"],
         default: "text",
       },
       createdAt: {

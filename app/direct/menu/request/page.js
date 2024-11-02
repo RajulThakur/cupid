@@ -1,22 +1,27 @@
 'use client'
-import FriendRequest from "@/app/_components/FriendRequest";
-import { useEffect, useState } from "react";
+import FriendRequests from "@/app/_components/FriendRequests";
+import { useEffect, useState, useRef } from "react";
 
 export default function RequestPage() {
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const interval = useRef(null);
   useEffect(() => {
+
     async function fetchRequests() {
-      const res = await fetch("/api/requests/friend_requests");
-      const data = await res.json();
-      if (data.senderData) setRequests(data.senderData);
+      interval.current = setInterval(async () => {
+        const res = await fetch("/api/requests/friend_requests");
+        const data = await res.json();
+        if (data.senderData) setRequests(data.senderData);
+      }, 5000);
     }
     fetchRequests();
+    setLoading(false);
+    return () => clearInterval(interval.current);
   }, []);
   return (
     <div>
-      {requests.map((request) => (
-        <FriendRequest key={request._id} request={request} />
-      ))}
+      {loading ? <p>Loading...</p> : <FriendRequests requests={requests} setRequests={setRequests} />}
     </div>
   );
 }

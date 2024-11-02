@@ -1,14 +1,20 @@
 "use client";
-import { CloseRounded, SearchRounded } from "@mui/icons-material";
+import { CloseRounded, LockOpenOutlined, LockOutlined, SearchRounded } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import useDebounce from "../_hooks/Debouncing";
 import InboxNavHeader from "./InboxNavHeader";
 import RequestUser from "./RequestUser";
 import StyledAvatar from "./StyledAvatar";
+import { useSession } from "next-auth/react";
 
 function InboxNav() {
+  const session = useSession();
+  const email = session?.data?.user?.email;
+
+  console.log('email',email);
   const [inputValue, setInputValue] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
+  const [name, setName] = useState("");
+  const [isLocked, setIsLocked] = useState(false);
   const inputRef = useRef(null);
   const debouncedSearch = useDebounce(inputValue, 500);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -46,9 +52,10 @@ function InboxNav() {
 
   useEffect(() => {
     function handleClickOutside(event) {
+      
       if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
         setShowOverlay(false);
-        setIsFocused(false);
+        
       }
     }
 
@@ -64,16 +71,21 @@ function InboxNav() {
   };
 
   const handleBlur = () => {
-    setIsFocused(false);
+    
   };
 
   return (
     <div className="flex flex-col gap-2">
       <nav className="flex items-center gap-2 py-2">
-        {!showOverlay && !inputValue && <StyledAvatar alt="Rajul" />}
+        {!showOverlay && !inputValue && <div className="flex items-center gap-2 flex-row">
+            <StyledAvatar alt="Rajul" />
+            <p className="text-sm font-semibold hidden md:block">{name}</p>
+          </div>}
         <div
           ref={searchContainerRef}
-          className={`relative mx-auto flex-grow ${showOverlay || inputValue ? 'w-full' : 'max-w-screen-md'}`}
+          className={`relative mx-auto flex-grow transition-all duration-200 ease-in-out ${
+            showOverlay || inputValue ? 'w-full' : 'max-w-screen-md'
+          }`}
         >
           <input
             ref={inputRef}
@@ -119,6 +131,9 @@ function InboxNav() {
             </div>
           )}
         </div>
+        {!showOverlay && !inputValue && (
+          <button className="text-base font-semibold hover:bg-accent-tint-400 rounded-full p-2 transition-all duration-200 ease-in-out"> {isLocked ? <LockOutlined /> : <LockOpenOutlined />}</button>
+        )}
       </nav>
       <InboxNavHeader />
     </div>
