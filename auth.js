@@ -1,6 +1,7 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { signInSchema } from "./lib/zod";
+import { validation } from "./lib/validation";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
