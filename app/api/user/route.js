@@ -12,4 +12,12 @@ export async function PATCH(req) {
   await UserModel.findByIdAndUpdate(id, { pin });
   return NextResponse.json({ message: "Pin updated" }, { status: 200 });
 }
-
+export async function GET(req) {
+  const searchParams = req.nextUrl.searchParams;
+  const email = searchParams.get("email");
+  await connectToDatabase();
+  const user = await UserModel.findOne({ email }).select(
+    "profileImage firstName lastName username",
+  );
+  return NextResponse.json({ user }, { status: 200 });
+}

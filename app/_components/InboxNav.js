@@ -1,5 +1,10 @@
 "use client";
-import { CloseRounded, LockOpenOutlined, LockOutlined, SearchRounded } from "@mui/icons-material";
+import {
+  CloseRounded,
+  LockOpenOutlined,
+  LockOutlined,
+  SearchRounded,
+} from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import useDebounce from "../_hooks/Debouncing";
 import InboxNavHeader from "./InboxNavHeader";
@@ -9,11 +14,12 @@ import { useSession } from "next-auth/react";
 
 function InboxNav() {
   const session = useSession();
-  const email = session?.data?.user?.email;
-
-  console.log('email',email);
+  const [email, setEmail] = useState(null);
+  useEffect(()=>{
+    setEmail(session?.data?.user?.email);
+  }, [session]);
+  const [user, setUser] = useState(null);
   const [inputValue, setInputValue] = useState("");
-  const [name, setName] = useState("");
   const [isLocked, setIsLocked] = useState(false);
   const inputRef = useRef(null);
   const debouncedSearch = useDebounce(inputValue, 500);
@@ -52,39 +58,47 @@ function InboxNav() {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
         setShowOverlay(false);
-        
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
+  useEffect(()=>{
+    async function getUser(){
+      const res = await fetch(`/api/user?email=${email}`);
+      const data = await res.json();
+      setUser(data.user);
+    }
+    getUser();
+  }, [email]);
   const handleFocus = () => {
-    setIsFocused(true);
     setShowOverlay(true);
   };
 
-  const handleBlur = () => {
-    
-  };
+  const handleBlur = () => {};
 
   return (
     <div className="flex flex-col gap-2">
       <nav className="flex items-center gap-2 py-2">
-        {!showOverlay && !inputValue && <div className="flex items-center gap-2 flex-row">
-            <StyledAvatar alt="Rajul" />
-            <p className="text-sm font-semibold hidden md:block">{name}</p>
-          </div>}
+        {!showOverlay && !inputValue && (
+          <div className="flex flex-row items-center gap-2">
+            <StyledAvatar alt="Rajul" src={user?.profileImage} />
+            <p className="hidden text-sm font-semibold md:block">{user?.firstName} {user?.lastName}</p>
+          </div>
+        )}
         <div
           ref={searchContainerRef}
           className={`relative mx-auto flex-grow transition-all duration-200 ease-in-out ${
-            showOverlay || inputValue ? 'w-full' : 'max-w-screen-md'
+            showOverlay || inputValue ? "w-full" : "max-w-screen-md"
           }`}
         >
           <input
@@ -132,7 +146,10 @@ function InboxNav() {
           )}
         </div>
         {!showOverlay && !inputValue && (
-          <button className="text-base font-semibold hover:bg-accent-tint-400 rounded-full p-2 transition-all duration-200 ease-in-out"> {isLocked ? <LockOutlined /> : <LockOpenOutlined />}</button>
+          <button className="rounded-full p-2 text-base font-semibold transition-all duration-200 ease-in-out hover:bg-accent-tint-400">
+            {" "}
+            {isLocked ? <LockOutlined /> : <LockOpenOutlined />}
+          </button>
         )}
       </nav>
       <InboxNavHeader />

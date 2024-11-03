@@ -14,6 +14,6 @@ export async function GET(req) {
   await connectToDatabase();
   const userId = await getUserIdByEmail(email);
   const {friends} = await Friends.findOne({ userId });
-  const friendData = await UserModel.find({_id:{$in:friends}}).select("username firstName lastName avatar");
+  const friendData = await UserModel.find({_id:{$in:friends}}).select("username firstName lastName profileImage");
   return NextResponse.json({friends:friendData});
 }

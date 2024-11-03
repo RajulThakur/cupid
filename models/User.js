@@ -6,6 +6,9 @@ const userSchema = new Schema({
     unique: true,
     required: true,
   },
+  profileImage: {
+    type: String,
+  },
   password: {
     type: String,
     required: true,

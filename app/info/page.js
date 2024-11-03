@@ -6,6 +6,7 @@ import InputField from "../_components/InputField";
 import ProfileEdit from "../_components/ProfileEdit";
 import RelSelect from "../_components/RelSelect";
 import SignUpNav from "../_components/SignUpNav";
+import { EdgeStoreProvider } from "../_lib/edgestore";
 
 function SignupPage({searchParams}) {
   return (
@@ -20,7 +21,9 @@ function SignupPage({searchParams}) {
           redirect(`/lock?id=${searchParams.id}&setup=true`);
         }}
       >
-        <ProfileEdit />
+        <EdgeStoreProvider>
+          <ProfileEdit />
+        </EdgeStoreProvider>
         <div className="flex gap-2">
           <InputField label="First Name" name="firstName" />
           <InputField label="Last Name" name="lastName" />

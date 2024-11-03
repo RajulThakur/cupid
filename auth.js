@@ -5,7 +5,7 @@ import { connectToDatabase } from "./lib/database";
 import { signInSchema } from "./lib/zod";
 import UserModel from "./models/User";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, signIn, signOut, auth, session } = NextAuth({
   providers: [
     Credentials({
       credentials: {

@@ -6,7 +6,7 @@ import Direct from "../../../_components/Direct";
 export default async function Page({ params }) {
   await connectToDatabase();
   const session = await auth();
-  const { _id, firstName, lastName, username } = await getUserByEmail(
+  const { _id, username } = await getUserByEmail(
     session.user.email,
   );
   const user = await getUserById(params.userID);

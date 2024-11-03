@@ -1,11 +1,6 @@
 import InboxNav from "@/app/_components/InboxNav";
-import { auth } from "@/auth";
-import { MessageRounded } from "@mui/icons-material";
 import { SessionProvider } from "next-auth/react";
-
 export default async function InboxLayout({ children }) {
-  const session = await auth();
-  if (!session) return null;
   return (
     <SessionProvider>
       <div className="relative flex h-svh flex-col gap-4 px-4">

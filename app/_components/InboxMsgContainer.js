@@ -11,6 +11,7 @@ function InboxMsgContainer({ friend }) {
         <StyledAvatar
           alt={friend.username}
           style={{ width: "56px", height: "56px" }}
+          src={friend.profileImage}
         />
         <div className="flex-1">
           <div className="flex items-center justify-between">

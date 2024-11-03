@@ -1,13 +1,14 @@
 "use client";
 import {
+  LockOpenOutlined,
   MicNoneOutlined,
+  MoreVert,
   PhotoOutlined,
-  SendRounded,
+  SendRounded
 } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import MessageComponent from "./Message";
-import { useEdgeStore } from "../_lib/edgestore";
 
 function Direct({ data }) {
   const { userid, myusername, friendusername, name, to } = data;
@@ -16,12 +17,14 @@ function Direct({ data }) {
   const [socket, setSocket] = useState(null);
   const bottomAuto = useRef(null);
   const [file, setFile] = useState(null);
-  const { edgeStore } = useEdgeStore();
   const inputFile = useRef(null);
-  // Connect to the server
+  const [yourProfileImage, setYourProfileImage] = useState(null);
+  const [friendProfileImage, setFriendProfileImage] = useState(null);
+
   useEffect(() => {
     const isBrowser = typeof window !== "undefined";
     const newSocket = isBrowser ? new WebSocket("ws://localhost:8080") : null;
+    // Get the messages
     async function getMessages() {
       const res = await fetch(
         `/api/messages?usernameA=${myusername}&usernameB=${friendusername}&user1=${userid}&user2=${to}`,
@@ -29,7 +32,18 @@ function Direct({ data }) {
       const data = await res.json();
       setMessages(data?.messages || []);
     }
+    // Get the profile images
+    async function getImages(){
+      const res = await fetch(`/api/getimage?id=${userid}`);
+      const data = await res.json();
+      setYourProfileImage(data.image);
+      const res2 = await fetch(`/api/getimage?id=${to}`);
+      const data2 = await res2.json();
+      setFriendProfileImage(data2.image);
+    }
     getMessages();
+    getImages();
+    // Connect to the server
     newSocket.onopen = () => {
       newSocket.send(
         JSON.stringify({
@@ -117,7 +131,16 @@ function Direct({ data }) {
   return (
     <div className="flex h-svh flex-col px-4 py-4">
       <nav className="flex justify-between">
-        <Avatar />
+        <Avatar sx={{ height: "45px", width: "45px" }} src={yourProfileImage} />
+        <div className="flex items-center gap-2">
+          <button className="text-accent-shade-900">
+            <LockOpenOutlined />
+          </button>
+          <button className="text-accent-shade-900">
+            <MoreVert />
+          </button>
+
+        </div>
       </nav>
 
       <div className="flex flex-1 flex-col gap-2 overflow-y-scroll">
@@ -125,6 +148,8 @@ function Direct({ data }) {
           <MessageComponent
             key={message._id || index}
             msgType={message.msgType}
+            yourProfileImage={yourProfileImage}
+            friendProfileImage={friendProfileImage}
             message={message.message}
             user={message.from === userid ? "You" : name}
             isYou={message.from === userid}
@@ -148,7 +173,7 @@ function Direct({ data }) {
           <div className="flex items-center gap-2">
             <MicNoneOutlined
               className="stroke-1"
-              sx={{ fontSize: "2rem", "&path": { strokeWidth: "0.5px" } }}
+              sx={{ fontSize: "2rem", "&path": { strokeWidth: "0.5px" }, "&:hover": { color: "rgb(154, 198, 133)" } }}
             />
             <input
               type="file"
@@ -158,13 +183,12 @@ function Direct({ data }) {
               className="hidden"
             />
             <button
-              className="rounded-full hover:bg-accent-shade-100"
               onClick={(e) => {
                 inputFile.current.click();
               }}
             >
               <PhotoOutlined
-                sx={{ fontSize: "2rem", "&path": { strokeWidth: "0.5px" } }}
+                sx={{ fontSize: "2rem", "&path": { strokeWidth: "0.5px" }, "&:hover": { color: "rgb(154, 198, 133)" } }}
               />
             </button>
           </div>

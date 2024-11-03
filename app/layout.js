@@ -1,6 +1,5 @@
 import localFont from "next/font/local";
 
-import { EdgeStoreProvider } from "./_lib/edgestore";
 import "./globals.css";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,9 +21,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <main>
-            <EdgeStoreProvider>
               {children}
-            </EdgeStoreProvider>
         </main>
       </body>
     </html>

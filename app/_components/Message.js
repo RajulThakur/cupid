@@ -6,16 +6,18 @@ function MessageComponent({
   isYou = true,
   user = "You",
   date,
-  msgType
+  msgType,
+  yourProfileImage,
+  friendProfileImage,
 }) {
   if(msgType === "image"){
-    return <ImageComponent message={message} />
+    return <ImageComponent message={message} yourProfileImage={yourProfileImage} friendProfileImage={friendProfileImage} />
   }
   else if(msgType === "text"){
-    return <TextComponent message={message} isYou={isYou} user={user} date={date} />
+    return <TextComponent message={message} isYou={isYou} user={user} date={date} yourProfileImage={yourProfileImage} friendProfileImage={friendProfileImage} />
   }
   else if(msgType === "audio"){
-    return <AudioComponent message={message} />
+    return <AudioComponent message={message} yourProfileImage={yourProfileImage} friendProfileImage={friendProfileImage} />
   }
 }
 export default MessageComponent;
