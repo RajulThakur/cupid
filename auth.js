@@ -20,10 +20,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new CredentialsSignin({
             cause: "Provide both email and password",
           });
-        const {userDetails, userPassword} = await validation(email, password);
+        const { userDetails, compare } = await validation(email, password);
         if (!userDetails) throw new CredentialsSignin("Invalid Email or password");
-        const compare = await bcrypt.compare(password, userPassword);
-
         if (!compare) throw new CredentialsSignin("Invalid Email or password");
         else return userDetails;
       },
