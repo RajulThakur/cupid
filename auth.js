@@ -1,11 +1,9 @@
 import bcrypt from "bcryptjs";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { connectToDatabase } from "./lib/database";
 import { signInSchema } from "./lib/zod";
-import UserModel from "./models/User";
 
-export const { handlers, signIn, signOut, auth, session } = NextAuth({
+export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       credentials: {
@@ -22,13 +20,8 @@ export const { handlers, signIn, signOut, auth, session } = NextAuth({
           throw new CredentialsSignin({
             cause: "Provide both email and password",
           });
-        //connection to db
-        await connectToDatabase();
-        const { password: userPassword, ...user } = await UserModel.findOne({
-          email,
-        }).select("+password");
-        const { _doc: userDetails } = user;
-        if (!user) throw new CredentialsSignin("Invalid Email or password");
+        const {userDetails, userPassword} = await validation(email, password);
+        if (!userDetails) throw new CredentialsSignin("Invalid Email or password");
         const compare = await bcrypt.compare(password, userPassword);
 
         if (!compare) throw new CredentialsSignin("Invalid Email or password");

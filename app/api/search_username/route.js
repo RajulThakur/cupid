@@ -12,7 +12,7 @@ export async function POST(req) {
     const users = await UserModel.find({
       username: { $regex: `^${username}`, $options: "i" },
     })
-      .select("firstName lastName username avatar")
+      .select("firstName lastName username profileImage")
       .limit(10);
     return NextResponse.json({ users }, { status: 200 });
   } catch (error) {

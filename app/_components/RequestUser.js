@@ -15,7 +15,7 @@ export default function RequestUser({ user}) {
       className="flex items-center justify-between px-4 py-2 hover:bg-gray-100"
     >
       <div className="flex items-center justify-start gap-4">
-        <Avatar alt={user.firstName} src={user.avatar} />
+        <Avatar alt={user.firstName} src={user.profileImage} />
         <div className="flex flex-col">
           <span className="font-medium">
             {user.firstName} {user.lastName}
