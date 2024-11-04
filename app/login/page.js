@@ -1,9 +1,9 @@
-import handleSubmit from "@/actions/handleSubmit";
 import Link from "next/link";
 import InputField from "../_components/InputField";
 import LogoBold from "../_components/LogoBold";
 import PasswordField from "../_components/PasswordField";
 import SignUpNav from "../_components/SignUpNav";
+import handleSubmit from "@/_actions/handleSubmit";
 
 function SigninPage() {
   return (

@@ -1,22 +1,34 @@
 "use server";
 
 import { auth } from "@/auth";
-import { getUserIdByEmail } from "@/lib/data-service";
-import { connectToDatabase } from "@/lib/database";
-import Friends from "@/models/Friends";
-import UserModel from "@/models/User";
+import prisma from "@/app/_lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
   const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { user } = session;
   const { email } = user;
 
-  await connectToDatabase();
-  const id = await getUserIdByEmail(email);
-  const requests = await Friends.findOne({ userId: id })?.select("requests");
-  const senderData = await UserModel.find({ _id: { $in: requests?.requests } }).select("username firstName lastName avatar");
+  const userData = await prisma.user.findUnique({
+    where: { email },
+    select: {
+      friendRequests: {
+        select: {
+          sender: {
+            select: {
+              username: true,
+              firstName: true,
+              lastName: true,
+              avatar: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const senderData = userData?.friendRequests.map(request => request.sender) || [];
   return NextResponse.json({ senderData }, { status: 200 });
 }
-

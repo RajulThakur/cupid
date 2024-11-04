@@ -1,12 +1,11 @@
 "use server";
 
-import getUserByEmail from "@/_actions/FindUserByEmail";
-import { createUser } from "@/lib/data-service";
-import { signUpSchema } from "@/lib/zod";
-import Friends from "@/models/Friends";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 export default async function handleSignUp(formData) {
+  const prisma = new PrismaClient();
+  
   try {
     const email = formData.get("email");
     const password = formData.get("password");
@@ -18,14 +17,25 @@ export default async function handleSignUp(formData) {
     } = await signUpSchema.parseAsync({
       email,
       password,
-      username
+      username,
     });
     const hashPass = await bcrypt.hash(Password, 7);
-    await createUser({ email: Email, password: hashPass, username: Username });
-    const { _id } = await getUserByEmail(email);
-    await Friends.create({ userId: _id });
-    return _id.toString();
+    const newUser = await prisma.user.create({
+      data: {
+        email: Email,
+        password: hashPass,
+        username: Username,
+      },
+    });
+    await prisma.friends.create({
+      data: {
+        userId: newUser.id,
+      },
+    });
+    return newUser.id.toString();
   } catch (error) {
     return error;
+  } finally {
+    await prisma.$disconnect();
   }
 }

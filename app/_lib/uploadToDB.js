@@ -1,12 +1,12 @@
-'use server';
+"use server";
 
-import { connectToDatabase } from "@/lib/database";
-import UserModel from "@/models/User";
+import { prisma } from "@/app/_lib/prisma";
 
-export async function uploadToDB(fileUrl,id) {
-  console.log(fileUrl);  
-  await connectToDatabase();
-  await UserModel.findByIdAndUpdate(id, {
-    profileImage: fileUrl,
+export async function uploadToDB(fileUrl, id) {
+  await prisma.user.update({
+    where: { id },
+    data: {
+      profileImage: fileUrl,
+    },
   });
 }

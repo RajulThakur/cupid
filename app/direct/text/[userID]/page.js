@@ -1,14 +1,12 @@
 import { auth } from "@/auth";
-import { getUserByEmail, getUserById } from "@/lib/data-service";
-import { connectToDatabase } from "@/lib/database";
+import { getUserByEmail, getUserById } from "@/app/_lib/data-service";
+import { connectToDatabase } from "@/app/_lib/database";
 import Direct from "../../../_components/Direct";
 
 export default async function Page({ params }) {
   await connectToDatabase();
   const session = await auth();
-  const { _id, username } = await getUserByEmail(
-    session.user.email,
-  );
+  const { _id, username } = await getUserByEmail(session.user.email);
   const user = await getUserById(params.userID);
   const {
     firstName: friendFirstName,

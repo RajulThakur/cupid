@@ -1,7 +1,7 @@
 "use server";
 
-import { AddInfo } from "@/lib/data-service";
-import { InfoSchema } from "@/lib/zod";
+import { AddInfo } from "@/app/_lib/data-service";
+import { InfoSchema } from "@/app/_lib/zod";
 import { headers } from "next/headers";
 
 export default async function handleInfo(formData) {

@@ -1,9 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { getUserIdByEmail } from "@/lib/data-service";
-import { connectToDatabase } from "@/lib/database";
-import Friends from "@/models/Friends";
+import prisma from "@/app/_lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -14,27 +12,38 @@ export async function POST(req) {
   const { email } = user;
   const { receiver } = await req.json();
 
-  await connectToDatabase();
-  const sender = await getUserIdByEmail(email);
+  const sender = await prisma.user.findUnique({
+    where: { email },
+    select: { id: true }
+  });
 
-  // check if the user is already in the friends array
-  const isAlreadyFriend = await Friends.findOne({ userId: receiver })
-    .select("friends")
-    .where("friends")
-    .equals(sender);
-  if (isAlreadyFriend)
+  const isAlreadyFriend = await prisma.friendship.findFirst({
+    where: {
+      OR: [
+        { senderId: sender.id, receiverId: receiver },
+        { senderId: receiver, receiverId: sender.id }
+      ],
+      status: 'ACCEPTED'
+    }
+  });
+
+  if (isAlreadyFriend) {
     return NextResponse.json(
-      { error: "Already Request sent" },
-      { status: 400 },
+      { error: "Already friends" },
+      { status: 400 }
     );
-  const requests = await Friends.findOneAndUpdate(
-    { userId: receiver },
-    { $push: { requests: sender } },
-    { new: true },
-  ).select("requests");
+  }
+
+  const request = await prisma.friendship.create({
+    data: {
+      senderId: sender.id,
+      receiverId: receiver,
+      status: 'PENDING'
+    }
+  });
 
   return NextResponse.json(
     { message: "Request sent", status: "success" },
-    { status: 200 },
+    { status: 200 }
   );
 }

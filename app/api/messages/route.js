@@ -1,66 +1,88 @@
 import { auth } from "@/auth";
-import { connectToDatabase } from "@/lib/database";
+import prisma from "@/app/_lib/prisma";
 import { NextResponse } from "next/server";
-import Message from "@/models/Message";
+import { ObjectId } from "mongodb";
+
 export async function GET(req) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
+
   const url = new URL(req.url);
   const searchParams = url.searchParams;
   let usernameA = searchParams.get("usernameA");
   let usernameB = searchParams.get("usernameB");
   let user1 = searchParams.get("user1");
   let user2 = searchParams.get("user2");
-  await connectToDatabase();
+
   if (usernameA < usernameB) {
-    const temp = user1;
-    user1 = user2;
-    user2 = temp;
+    [user1, user2] = [user2, user1];
   }
-  const isExist = await Message.findOne({
-    userA: user1,
-    userB: user2,
-  });
-  if (!isExist) {
-    await Message.create({
+
+  let messages = await prisma.messages.findFirst({
+    where: {
       userA: user1,
       userB: user2,
-      messages: [],
+    }
+  });
+
+  if (!messages) {
+    messages = await prisma.messages.create({
+      data: {
+        userA: user1,
+        userB: user2,
+        messages: [],
+        createdAt: new Date()
+      }
     });
   }
-  const data = isExist.messages.slice(-10);
-  return NextResponse.json({messages:data });
+
+  const data = messages.messages.slice(-10);
+  return NextResponse.json({ messages: data });
 }
 
 export async function POST(req) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
-  await connectToDatabase();
+
   const body = await req.json();
-  let { usernameA, usernameB, from,message, user1, user2, msgType } = body;
-  // if (usernameA !== session.user.username || usernameB !== session.user.username)
-  //   throw new Error("Unauthorized");
-  // if (user1 !== session.user._id.toString() && user2 !== session.user._id.toString())
-  //   throw new Error("Unauthorized");
+  let { usernameA, usernameB, from, message, user1, user2, msgType } = body;
 
   if (usernameA < usernameB) {
-    const temp = user1;
-    user1 = user2;
-    user2 = temp;
+    [user1, user2] = [user2, user1];
   }
 
-  const isExist = await Message.findOne({
-    userA: user1,
-    userB: user2,
-  });
-  if (!isExist) {
-    await Message.create({
+  let messageDoc = await prisma.messages.findFirst({
+    where: {
       userA: user1,
       userB: user2,
-      messages: [],
+    }
+  });
+
+  if (!messageDoc) {
+    messageDoc = await prisma.messages.create({
+      data: {
+        userA: user1,
+        userB: user2,
+        messages: [],
+        createdAt: new Date()
+      }
     });
   }
-  isExist.messages.push({ from,  message, msgType });
-  await isExist.save();
+
+  await prisma.messages.update({
+    where: { id: messageDoc.id },
+    data: {
+      messages: {
+        push: {
+          id: new ObjectId().toString(),
+          from,
+          message,
+          msgType,
+          createdAt: new Date()
+        }
+      }
+    }
+  });
+
   return NextResponse.json({ message: "Message sent" });
 }
