@@ -1,4 +1,3 @@
-import handleInfo from "@/actions/handleInfo";
 import { FormControl, TextField } from "@mui/material";
 import { redirect } from "next/navigation";
 import GenderSel from "../_components/GenderSel";
@@ -7,6 +6,7 @@ import ProfileEdit from "../_components/ProfileEdit";
 import RelSelect from "../_components/RelSelect";
 import SignUpNav from "../_components/SignUpNav";
 import { EdgeStoreProvider } from "../_lib/edgestore";
+import handleInfo from "@/_actions/handleInfo";
 
 function SignupPage({searchParams}) {
   return (

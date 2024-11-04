@@ -1,26 +1,32 @@
 import { auth } from "@/auth";
-import { getUserByEmail, getUserById } from "@/app/_lib/data-service";
-import { connectToDatabase } from "@/app/_lib/database";
+import prisma from "@/app/_lib/prisma";
 import Direct from "../../../_components/Direct";
 
 export default async function Page({ params }) {
-  await connectToDatabase();
   const session = await auth();
-  const { _id, username } = await getUserByEmail(session.user.email);
-  const user = await getUserById(params.userID);
-  const {
-    firstName: friendFirstName,
-    lastName: friendLastName,
-    username: friendUsername,
-  } = user;
+  
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { id: true, username: true }
+  });
+
+  const friend = await prisma.user.findUnique({
+    where: { id: params.userID },
+    select: {
+      firstName: true,
+      lastName: true,
+      username: true
+    }
+  });
+
   return (
     <div>
       <Direct
         data={{
-          userid: _id.toString(),
-          myusername: username,
-          friendusername: friendUsername,
-          name: `${friendFirstName} ${friendLastName}`,
+          userid: user.id,
+          myusername: user.username,
+          friendusername: friend.username,
+          name: `${friend.firstName} ${friend.lastName}`,
           to: params.userID,
         }}
       />

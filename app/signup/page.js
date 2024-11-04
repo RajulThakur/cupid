@@ -1,4 +1,3 @@
-import handleSignUp from "@/actions/handleSignUp";
 import { Checkbox } from "@mui/material";
 import { redirect } from "next/navigation";
 import InputField from "../_components/InputField";
@@ -6,6 +5,7 @@ import PasswordField from "../_components/PasswordField";
 import SignUpNav from "../_components/SignUpNav";
 import LogoBold from "../_components/LogoBold";
 import Username from "../_components/Username";
+import handleSignUp from "@/_actions/handleSignUp";
 
 async function handleClick(formdata) {
   "use server";
