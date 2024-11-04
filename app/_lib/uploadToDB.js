@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/app/_lib/prisma";
+import prisma from "@/app/_lib/prisma";
 
 export async function uploadToDB(fileUrl, id) {
   await prisma.user.update({
