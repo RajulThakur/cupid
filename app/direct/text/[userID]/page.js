@@ -4,7 +4,6 @@ import Direct from "../../../_components/Direct";
 
 export default async function Page({ params }) {
   const session = await auth();
-  
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     select: { id: true, username: true }
@@ -18,7 +17,6 @@ export default async function Page({ params }) {
       username: true
     }
   });
-
   return (
     <div>
       <Direct

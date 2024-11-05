@@ -21,7 +21,7 @@ function DirectMessagesPage() {
         ))
       ) : (
         friends.map((friend) => (
-          <InboxMsgContainer key={friend._id} friend={friend} />
+          <InboxMsgContainer key={friend.id} friend={friend} />
         ))
       )}
     </div>

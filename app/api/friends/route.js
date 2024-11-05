@@ -30,7 +30,8 @@ export async function GET(req) {
       username: true,
       firstName: true,
       lastName: true,
-      profileImage: true
+      profileImage: true,
+      id: true
     }
   });
 

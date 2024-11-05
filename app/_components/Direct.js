@@ -23,7 +23,7 @@ function Direct({ data }) {
 
   useEffect(() => {
     const isBrowser = typeof window !== "undefined";
-    const newSocket = isBrowser ? new WebSocket("ws://localhost:8080") : null;
+    const newSocket = isBrowser ? new WebSocket(`${process.env.WS_URL}`) : null;
     // Get the messages
     async function getMessages() {
       const res = await fetch(
@@ -130,20 +130,8 @@ function Direct({ data }) {
 
   return (
     <div className="flex h-svh flex-col px-4 py-4">
-      <nav className="flex justify-between">
-        <Avatar sx={{ height: "45px", width: "45px" }} src={yourProfileImage} />
-        <div className="flex items-center gap-2">
-          <button className="text-accent-shade-900">
-            <LockOpenOutlined />
-          </button>
-          <button className="text-accent-shade-900">
-            <MoreVert />
-          </button>
-
-        </div>
-      </nav>
-
-      <div className="flex flex-1 flex-col gap-2 overflow-y-scroll">
+      <div className="flex flex-1 flex-col gap-2 pr-6 overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
+        
         {messages.map((message, index) => (
           <MessageComponent
             key={message._id || index}

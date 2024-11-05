@@ -11,14 +11,10 @@ export async function POST(req) {
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  console.log("user", user);
   const { email } = user;
-  console.log("email", email);
   const { receiver } = await req.json();
-  console.log("receiver", receiver);
   // Fetch sender user ID based on email
   const sender = await getUserIdByEmail(email);
-  console.log("sender", sender);
   // Check if the user is already in the friends array
   const isAlreadyFriend = await prisma.friends.findFirst({
     where: {
