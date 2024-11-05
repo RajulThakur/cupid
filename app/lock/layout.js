@@ -99,7 +99,6 @@ function LockLayout({ children }) {
       <section className="flex flex-col gap-10">
         <nav className="flex justify-between py-2">
           <Avatar />
-          <Avatar />
         </nav>
         {children}
         <section className="flex justify-center gap-2">

@@ -1,3 +1,4 @@
+import prisma from "../_lib/prisma";
 
 export default async function LockPage({ searchParams }) {
   const {id}= searchParams;

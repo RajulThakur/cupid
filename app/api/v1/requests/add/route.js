@@ -7,8 +7,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const session = await auth();
-  if (!session)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+ 
   const { user } = session;
   const { email } = user;
   const { sender } = await req.json();

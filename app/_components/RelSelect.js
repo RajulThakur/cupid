@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import * as React from "react";
 
-const status = ["Happily Married", "Pta nahi bagwan jane"];
+const status = ["Happily Married", "Pta nahi bagwan jane","Single","In a Relationship","Complicated","Open to Relationships","Married","In an Open Relationship"];
 
 export default function RelSelect() {
   const [relStatus, setRelStatus] = React.useState("");

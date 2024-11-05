@@ -1,10 +1,11 @@
 'use client '
 import { PersonAddRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
+import { BASE_URL } from "../_helper/Config";
 
 export default function RequestUser({ user}) {
   async function handleRequest() {
-    await fetch("/api/requests/create_request", {
+    await fetch(`${BASE_URL}/requests/create_request`, {
       method: "POST",
       body: JSON.stringify({ receiver: user.id }),
     });

@@ -1,17 +1,29 @@
 import prisma from "@/app/_lib/prisma";
 import { NextResponse } from "next/server";
-
+import { auth } from "@/auth";
+import { getUserIdByEmail } from "@/app/_lib/data-service";
 export async function POST(req) {
   try {
     const body = await req.json();
     const { username } = body;
+    const {user} = await auth();
+    const currentUser = await getUserIdByEmail(user.email);
 
     const users = await prisma.user.findMany({
       where: {
-        username: {
-          startsWith: username,
-          mode: 'insensitive',
-        },
+        AND: [
+          {
+            username: {
+              startsWith: username,
+              mode: 'insensitive',
+            }
+          },
+          {
+            id: {
+              not: currentUser
+            }
+          }
+        ]
       },
       select: {
         firstName: true,

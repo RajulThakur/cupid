@@ -31,7 +31,7 @@ export const InfoSchema = z.object({
   gender: z.enum(["male", "female", "others"], {
     required_error: "Gender is required",
   }),
-  relationship: z.enum(["Happily Married", "Pta nahi bagwan jane"], {
+  relationship: z.enum(["Happily Married", "Pta nahi bagwan jane","Single","In a Relationship","Complicated","Open to Relationships","Married","In an Open Relationship"], {
     required_error: "Relationship Status required",
   }),
   bio: z.string({ required_error: "Bio is required" }).max(50).min(5),

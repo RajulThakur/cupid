@@ -5,11 +5,6 @@ export async function POST(req) {
   try {
     const body = await req.json();
     const { username } = body;
-    
-    if (!username) {
-      return NextResponse.json({ available: true }, { status: 200 });
-    }
-
     const user = await prisma.user.findUnique({
       where: { username }
     });

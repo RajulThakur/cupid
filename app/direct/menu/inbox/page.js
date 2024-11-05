@@ -1,13 +1,14 @@
 'use client'
 import InboxMsgContainer from "@/app/_components/InboxMsgContainer";
 import InboxMsgContainerSkeleton from "@/app/_components/InboxMsgContainerSkeleton";
+import { BASE_URL } from "@/app/_helper/Config";
 import { useEffect, useState } from "react";
 
 function DirectMessagesPage() {
   const [friends, setFriends] = useState(null);
   useEffect(() => {
     async function fetchFriends() {
-      const res = await fetch("/api/friends");
+      const res = await fetch(`${BASE_URL}/friends`);
       const data = await res.json();
       setFriends(data.friends);
     }

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { FormControl, TextField } from "@mui/material";
 import { redirect } from "next/navigation";
 import GenderSel from "../_components/GenderSel";
@@ -9,29 +12,35 @@ import { EdgeStoreProvider } from "../_lib/edgestore";
 import handleInfo from "@/_actions/handleInfo";
 
 function SignupPage({searchParams}) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   return (
     <div className="flex h-svh flex-col items-center justify-center px-3 py-3">
       <SignUpNav heading="Info" />
       <form
         className="flex flex-col items-center gap-5 px-7"
         action={async (formData) => {
-          "use server";
-          await handleInfo(formData);
-          //redirect to lock page with id and setup true
-          redirect(`/lock?id=${searchParams.id}&setup=true`);
+          setIsSubmitting(true);
+          try {
+            await handleInfo(formData);
+            redirect(`/lock?id=${searchParams.id}&setup=true`);
+          } catch (error) {
+            setIsSubmitting(false);
+            console.error(error);
+          }
         }}
       >
         <EdgeStoreProvider>
-          <ProfileEdit />
+          <ProfileEdit disabled={isSubmitting} id={searchParams.id} />
         </EdgeStoreProvider>
         <div className="flex gap-2">
-          <InputField label="First Name" name="firstName" />
-          <InputField label="Last Name" name="lastName" />
+          <InputField label="First Name" name="firstName" disabled={isSubmitting} />
+          <InputField label="Last Name" name="lastName" disabled={isSubmitting} />
         </div>
         <FormControl fullWidth>
-          <GenderSel />
+          <GenderSel disabled={isSubmitting} />
         </FormControl>
-        <RelSelect />
+        <RelSelect disabled={isSubmitting} />
         <TextField
           fullWidth
           id="filled-multiline-static"
@@ -41,9 +50,14 @@ function SignupPage({searchParams}) {
           rows={4}
           placeholder="Something you like"
           variant="filled"
+          disabled={isSubmitting}
         />
-        <button type="submit" className="w-full rounded-xl bg-accent-tint-700 py-3 text-xl font-semibold tracking-wider text-accent-shade-700">
-          Signup
+        <button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="w-full rounded-xl bg-accent-tint-700 py-3 text-xl font-semibold tracking-wider text-accent-shade-700 disabled:opacity-50"
+        >
+          {isSubmitting ? "Submitting..." : "Signup"}
         </button>
       </form>
     </div>

@@ -1,7 +1,8 @@
 "use client";
+import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import { BASE_URL } from "../_helper/Config";
 import useDebounce from "../_hooks/Debouncing";
-const { TextField, FormHelperText } = require("@mui/material");
 
 function Username({ name, label }) {
   const [value, setValue] = useState("");
@@ -15,7 +16,7 @@ function Username({ name, label }) {
   useEffect(() => {
     const check = async () => {
       try {
-        const response = await fetch("/api/check_username", {
+        const response = await fetch(`${BASE_URL}/check_username`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

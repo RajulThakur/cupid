@@ -2,13 +2,10 @@ import { auth } from "@/auth";
 import prisma from "@/app/_lib/prisma";
 import { NextResponse } from "next/server";
 
-  export async function POST(req) {
-    const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      
-    const { sender } = await req.json();
-    const { email } = session.user;
+export async function POST(req) {
+  const session = await auth();
+  const { sender } = await req.json();
+  const { email } = session.user;
 
     // Update friend request using Prisma
     await prisma.friends.update({

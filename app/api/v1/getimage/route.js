@@ -1,12 +1,7 @@
-import { auth } from "@/auth";
 import prisma from "@/app/_lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
-  const session = await auth();
-  if (!session) {
-    return NextResponse.json({ status: "error", message: "Unauthorized" });
-  }
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");

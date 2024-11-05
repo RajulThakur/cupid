@@ -13,5 +13,5 @@ export const middleware = function (request) {
   return response;
 };
 export const config = {
-  matcher: ["/direct/:path*"],
+  matcher: ["/direct/:path*","/api/v1/:path*"],
 };

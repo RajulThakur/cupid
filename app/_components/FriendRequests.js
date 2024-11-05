@@ -1,11 +1,12 @@
 'use client'
 import { CheckRounded, CloseRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
+import { BASE_URL } from "../_helper/Config";
 function FriendRequest({ request,setRequests,requests }) {
   async function handleAccept(id) {
     const newRequests = requests.filter((request) => request._id !== id);
     setRequests(newRequests);
-    await fetch("/api/requests/add", {
+    await fetch(`${BASE_URL}/requests/add`, {
       method: "POST",
       body: JSON.stringify({ sender: request._id }),
     });
@@ -13,7 +14,7 @@ function FriendRequest({ request,setRequests,requests }) {
   async function handleReject(id) {
     const newRequests = requests.filter((request) => request._id !== id);
     setRequests(newRequests);
-    await fetch("/api/requests/reject", {
+    await fetch(`${BASE_URL}/requests/reject`, {
       method: "POST",
       body: JSON.stringify({ sender: request._id }),
     });

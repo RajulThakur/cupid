@@ -1,16 +1,9 @@
-"use server";
-
 import { getUserIdByEmail } from "@/app/_lib/data-service";
 import prisma from "@/app/_lib/prisma";
-import { auth } from "@/auth";
 
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const {user} = await auth();
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
   const { email } = user;
   const { receiver } = await req.json();
   // Fetch sender user ID based on email
@@ -50,3 +43,4 @@ export async function POST(req) {
     { status: 200 }
   );
 }
+

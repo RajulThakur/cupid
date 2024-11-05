@@ -1,11 +1,8 @@
-import { auth } from "@/auth";
 import prisma from "@/app/_lib/prisma";
-import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
+import { NextResponse } from "next/server";
 
 export async function GET(req) {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
 
   const url = new URL(req.url);
   const searchParams = url.searchParams;
@@ -41,8 +38,6 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
 
   const body = await req.json();
   let { usernameA, usernameB, from, message, user1, user2, msgType } = body;

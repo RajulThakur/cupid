@@ -32,8 +32,8 @@ export default async function handleSignUp(formData) {
     console.log("newUser", newUser);
     const friendsRecord = await prisma.friends.create({
       data: {
-        userId: {
-          connect: { id: newUser.id }
+        user: {
+          connect: { id: newUser.id },  
         },
         friends: [],
         requests: [],

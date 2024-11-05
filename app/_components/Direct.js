@@ -1,13 +1,11 @@
 "use client";
 import {
-  LockOpenOutlined,
   MicNoneOutlined,
-  MoreVert,
   PhotoOutlined,
   SendRounded
 } from "@mui/icons-material";
-import { Avatar } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import { BASE_URL } from "../_helper/Config";
 import MessageComponent from "./Message";
 
 function Direct({ data }) {
@@ -27,17 +25,17 @@ function Direct({ data }) {
     // Get the messages
     async function getMessages() {
       const res = await fetch(
-        `/api/messages?usernameA=${myusername}&usernameB=${friendusername}&user1=${userid}&user2=${to}`,
+        `${BASE_URL}/messages?usernameA=${myusername}&usernameB=${friendusername}&user1=${userid}&user2=${to}`,
       );
       const data = await res.json();
       setMessages(data?.messages || []);
     }
     // Get the profile images
     async function getImages(){
-      const res = await fetch(`/api/getimage?id=${userid}`);
+      const res = await fetch(`${BASE_URL}/getimage?id=${userid}`);
       const data = await res.json();
       setYourProfileImage(data.image);
-      const res2 = await fetch(`/api/getimage?id=${to}`);
+      const res2 = await fetch(`${BASE_URL}/getimage?id=${to}`);
       const data2 = await res2.json();
       setFriendProfileImage(data2.image);
     }
@@ -94,7 +92,7 @@ function Direct({ data }) {
       ]);
       // Send the message to the server
       setValue("");
-      await fetch("/api/messages", {
+      await fetch(`${BASE_URL}/messages`, {
         method: "POST",
         body: JSON.stringify({
           usernameA: myusername,

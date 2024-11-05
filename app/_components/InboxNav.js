@@ -4,13 +4,16 @@ import {
   LockOpenOutlined,
   LockOutlined,
   SearchRounded,
+  LogoutOutlined,
 } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import useDebounce from "../_hooks/Debouncing";
 import InboxNavHeader from "./InboxNavHeader";
 import RequestUser from "./RequestUser";
 import StyledAvatar from "./StyledAvatar";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
+import AdditonalInfo from "./AdditonalInfo";
+import { BASE_URL } from "../_helper/Config";
 
 function InboxNav() {
   const session = useSession();
@@ -38,7 +41,7 @@ function InboxNav() {
   useEffect(() => {
     async function fetchUsers() {
       if (!debouncedSearch) return;
-      const response = await fetch("/api/search_username", {
+      const response = await fetch(`${BASE_URL}/search_username`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +79,7 @@ function InboxNav() {
 
   useEffect(()=>{
     async function getUser(){
-      const res = await fetch(`/api/user?email=${email}`);
+      const res = await fetch(`${BASE_URL}/user?email=${email}`);
       const data = await res.json();
       console.log("data", data);
       setUser(data.user);
@@ -95,8 +98,8 @@ function InboxNav() {
       <nav className="flex items-center gap-2 py-2">
         {!showOverlay && !inputValue && (
           <div className="flex flex-row items-center gap-2">
-            <StyledAvatar alt="Rajul" src={user?.profileImage} />
-            <p className="hidden text-sm font-semibold md:block">{user?.firstName} {user?.lastName}</p>
+            <StyledAvatar alt={`${user?.firstName} ${user?.lastName}`} src={user?.profileImage} />
+            <p className="hidden text-sm font-medium md:block">{user?.firstName} {user?.lastName}</p>
           </div>
         )}
         <div
@@ -150,10 +153,22 @@ function InboxNav() {
           )}
         </div>
         {!showOverlay && !inputValue && (
-          <button className="rounded-full p-2 text-base font-semibold transition-all duration-200 ease-in-out hover:bg-accent-tint-400">
-            {" "}
-            {isLocked ? <LockOutlined /> : <LockOpenOutlined />}
-          </button>
+          <>
+            <button className="rounded-full p-2 text-base font-light group relative transition-all duration-200 ease-in-out hover:bg-accent-tint-400">
+              {isLocked ? <LockOutlined /> : <LockOpenOutlined />}
+              <AdditonalInfo>Lock</AdditonalInfo>
+            </button>
+            <button 
+              onClick={() => signOut({
+                callbackUrl: "/login",  // Redirect after signing out
+                redirect: true          // Whether to trigger redirect
+              })}
+              className="rounded-full p-2 text-base font-light transition-all duration-200 ease-in-out hover:bg-accent-tint-400 group relative"
+            >
+              <LogoutOutlined />
+              <AdditonalInfo>Sign out</AdditonalInfo>
+            </button>
+          </>
         )}
       </nav>
       <InboxNavHeader />
