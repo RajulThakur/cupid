@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 
 function InboxNav() {
   const session = useSession();
+  console.log(session);
   const [email, setEmail] = useState(null);
   useEffect(()=>{
     setEmail(session?.data?.user?.email);
@@ -45,6 +46,7 @@ function InboxNav() {
         body: JSON.stringify({ username: debouncedSearch }),
       });
       const { users } = await response.json();
+      console.log("users received", users);
       setFilteredUsers(users);
     }
     fetchUsers();
@@ -76,7 +78,9 @@ function InboxNav() {
     async function getUser(){
       const res = await fetch(`/api/user?email=${email}`);
       const data = await res.json();
+      console.log("data", data);
       setUser(data.user);
+      console.log("user", data.user);
     }
     getUser();
   }, [email]);
@@ -132,11 +136,11 @@ function InboxNav() {
 
           {/* Overlay search results */}
           {showOverlay && inputValue && (
-            <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-80 overflow-y-auto rounded-b-lg bg-white shadow-lg">
+            <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-80 overflow-y-auto rounded-b-lg bg-white shadow-lg transform origin-top transition-all duration-500 ease-out animate-slideDown">
               {filteredUsers.length > 0 ? (
                 <ul className="py-2">
                   {filteredUsers.map((user) => (
-                    <RequestUser key={user._id} user={user} />
+                    <RequestUser key={user.id} user={user} />
                   ))}
                 </ul>
               ) : (

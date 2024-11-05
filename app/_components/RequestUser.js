@@ -4,9 +4,10 @@ import { Avatar } from "@mui/material";
 
 export default function RequestUser({ user}) {
   async function handleRequest() {
+    console.log("user", user);
     await fetch("/api/requests/create_request", {
       method: "POST",
-      body: JSON.stringify({ receiver: user._id }),
+      body: JSON.stringify({ receiver: user.id }),
     });
   
   }

@@ -42,6 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           // Don't send the password back in the user object
           const { password: _, ...userWithoutPassword } = user;
+          console.log(userWithoutPassword);
           return userWithoutPassword;
           
         } catch (error) {

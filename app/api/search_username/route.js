@@ -18,6 +18,7 @@ export async function POST(req) {
         lastName: true,
         username: true,
         profileImage: true,
+        id: true
       },
       take: 10,
     });

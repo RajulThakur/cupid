@@ -24,9 +24,8 @@ export async function GET(req) {
       profileImage: true,
       firstName: true,
       lastName: true,
-      username: true
+      username: true,
     }
   });
-  
   return NextResponse.json({ user }, { status: 200 });
 }

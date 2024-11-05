@@ -1,49 +1,56 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getUserIdByEmail } from "@/app/_lib/data-service";
 import prisma from "@/app/_lib/prisma";
+import { auth } from "@/auth";
+
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const session = await auth();
-  if (!session)
+  const {user} = await auth();
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { user } = session;
+  }
+  console.log("user", user);
   const { email } = user;
+  console.log("email", email);
   const { receiver } = await req.json();
-
-  const sender = await prisma.user.findUnique({
-    where: { email },
-    select: { id: true }
-  });
-
-  const isAlreadyFriend = await prisma.friendship.findFirst({
+  console.log("receiver", receiver);
+  // Fetch sender user ID based on email
+  const sender = await getUserIdByEmail(email);
+  console.log("sender", sender);
+  // Check if the user is already in the friends array
+  const isAlreadyFriend = await prisma.friends.findFirst({
     where: {
-      OR: [
-        { senderId: sender.id, receiverId: receiver },
-        { senderId: receiver, receiverId: sender.id }
-      ],
-      status: 'ACCEPTED'
-    }
+      userId: receiver,
+      friends: {
+        has: sender,  // Checks if `sender` is already in the `friends` array
+      },
+    },
   });
 
   if (isAlreadyFriend) {
     return NextResponse.json(
-      { error: "Already friends" },
+      { error: "Already request sent" },
       { status: 400 }
     );
   }
 
-  const request = await prisma.friendship.create({
+  // Push sender ID to the requests array of the receiver user
+  const updatedRequests = await prisma.friends.update({
+    where: { userId: receiver },
     data: {
-      senderId: sender.id,
-      receiverId: receiver,
-      status: 'PENDING'
-    }
+      requests: {
+        push: sender,  // Adds `sender` to the `requests` array
+      },
+    },
+    select: {
+      requests: true,
+    },
   });
 
   return NextResponse.json(
-    { message: "Request sent", status: "success" },
+    { message: "Request sent", status: "success", updatedRequests },
     { status: 200 }
   );
 }
