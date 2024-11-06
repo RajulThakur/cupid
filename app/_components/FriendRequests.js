@@ -38,7 +38,7 @@ function FriendRequests({ requests,setRequests }) {
   return (
     <>
       {requests.map((request) => (
-        <FriendRequest key={request._id} request={request} setRequests={setRequests} requests={requests}/>
+        <FriendRequest key={request.id} request={request} setRequests={setRequests} requests={requests}/>
       ))}
     </>
   );

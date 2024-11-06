@@ -29,7 +29,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const user = await prisma.user.findUnique({
             where: { email },
           });
-
+          user.image = user.profileImage;
+          user.name = `${user.firstName} ${user.lastName}`;
+          console.log("auth user", user);
           if (!user) {
             throw new CredentialsSignin("Invalid Email or password");
           }
@@ -41,9 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
 
           // Don't send the password back in the user object
-          const { password: _, ...userWithoutPassword } = user;
-          console.log(userWithoutPassword);
-          return userWithoutPassword;
+          return user;
           
         } catch (error) {
           console.log(error);

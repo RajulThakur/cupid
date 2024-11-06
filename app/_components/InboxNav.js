@@ -17,12 +17,9 @@ import { BASE_URL } from "../_helper/Config";
 
 function InboxNav() {
   const session = useSession();
-  console.log(session);
-  const [email, setEmail] = useState(null);
-  useEffect(()=>{
-    setEmail(session?.data?.user?.email);
-  }, [session]);
-  const [user, setUser] = useState(null);
+  console.log("session", session);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [isLocked, setIsLocked] = useState(false);
   const inputRef = useRef(null);
@@ -77,29 +74,28 @@ function InboxNav() {
     };
   }, []);
 
-  useEffect(()=>{
-    async function getUser(){
-      const res = await fetch(`${BASE_URL}/user?email=${email}`);
-      const data = await res.json();
-      console.log("data", data);
-      setUser(data.user);
-      console.log("user", data.user);
-    }
-    getUser();
-  }, [email]);
   const handleFocus = () => {
     setShowOverlay(true);
   };
 
-  const handleBlur = () => {};
+  useEffect(()=>{
+    if(session.status === "authenticated"){
+      setUserData(session.data.user);
+      setIsLoading(false);
+    }
+  }, [session]);
 
   return (
     <div className="flex flex-col gap-2">
       <nav className="flex items-center gap-2 py-2">
         {!showOverlay && !inputValue && (
           <div className="flex flex-row items-center gap-2">
-            <StyledAvatar alt={`${user?.firstName} ${user?.lastName}`} src={user?.profileImage} />
-            <p className="hidden text-sm font-medium md:block">{user?.firstName} {user?.lastName}</p>
+            <StyledAvatar alt={userData?.name} src={userData?.image} />
+            {isLoading ? (
+              <div className="hidden h-4 w-32 animate-pulse rounded bg-accent-tint-200 md:block"></div>
+            ) : (
+              <p className="hidden text-sm font-medium md:block">{userData?.name}</p>
+            )}
           </div>
         )}
         <div
@@ -114,7 +110,6 @@ function InboxNav() {
             value={inputValue}
             onChange={handleInputChange}
             onFocus={handleFocus}
-            onBlur={handleBlur}
             placeholder="Search"
             className={`w-full rounded-lg border border-gray-300 py-2 ${!showOverlay && !inputValue ? "px-10" : "px-3"} placeholder:font-extralight placeholder:tracking-wide focus:outline-none`}
           />

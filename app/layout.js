@@ -15,7 +15,10 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Cupid",
+  title: {
+    template: 'Cupid %s',
+    default: 'Cupid',
+  },
   description: "Messenger app to talk between people",
 };
 export default function RootLayout({ children }) {

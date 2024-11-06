@@ -1,7 +1,10 @@
 import { auth } from "@/auth";
 import prisma from "@/app/_lib/prisma";
 import Direct from "../../../_components/Direct";
-
+export const metadata = {
+  title: "Text",
+  description: "Text messages",
+};
 export default async function Page({ params }) {
   const session = await auth();
   const user = await prisma.user.findUnique({

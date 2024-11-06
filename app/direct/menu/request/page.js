@@ -11,6 +11,7 @@ export default function RequestPage() {
     async function fetchRequests() {
       interval.current = setInterval(async () => {
         const res = await fetch(`${BASE_URL}/requests/friend_requests`);
+        console.log(res);
         const data = await res.json();
         if (data.senderData) setRequests(data.senderData);
       }, 5000);

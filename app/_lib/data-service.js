@@ -1,3 +1,4 @@
+"use server";
 import prisma from "./prisma";
 ///GET USER
 export async function getUserByEmail(email) {

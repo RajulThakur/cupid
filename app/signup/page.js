@@ -7,6 +7,10 @@ import LogoBold from "../_components/LogoBold";
 import Username from "../_components/Username";
 import handleSignUp from "@/_actions/handleSignUp";
 
+export const metadata = {
+  title: "Signup",
+  description: "Create an account",
+};
 async function handleClick(formdata) {
   "use server";
   const data = await handleSignUp(formdata);
