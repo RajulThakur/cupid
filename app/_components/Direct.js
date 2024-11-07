@@ -21,7 +21,7 @@ function Direct({ data }) {
 
   useEffect(() => {
     const isBrowser = typeof window !== "undefined";
-    const newSocket = isBrowser ? new WebSocket(`ws://localhost:8080`) : null;
+    const newSocket = isBrowser ? new WebSocket(`${process.env.WS_DIRECT}`) : null;
     // Get the messages
     async function getMessages() {
       const res = await fetch(
