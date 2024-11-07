@@ -4,19 +4,19 @@ import { Avatar } from "@mui/material";
 import { BASE_URL } from "../_helper/Config";
 function FriendRequest({ request,setRequests,requests }) {
   async function handleAccept(id) {
-    const newRequests = requests.filter((request) => request._id !== id);
+    const newRequests = requests.filter((request) => request.id !== id);
     setRequests(newRequests);
     await fetch(`${BASE_URL}/requests/add`, {
       method: "POST",
-      body: JSON.stringify({ sender: request._id }),
+      body: JSON.stringify({ sender: request.id }),
     });
   }
   async function handleReject(id) {
-    const newRequests = requests.filter((request) => request._id !== id);
+    const newRequests = requests.filter((request) => request.id !== id);
     setRequests(newRequests);
     await fetch(`${BASE_URL}/requests/reject`, {
       method: "POST",
-      body: JSON.stringify({ sender: request._id }),
+      body: JSON.stringify({ sender: request.id }),
     });
   }
   return (
@@ -25,10 +25,10 @@ function FriendRequest({ request,setRequests,requests }) {
       <div className="flex-1">
         <p className="text-lg font-semibold tracking-wide">{request.username}</p>
       </div>
-      <button className="bg-accent-tint-600 rounded-md px-2 py-1 text-accent-shade-800 font-bold tracking-wider hover:bg-accent-tint-400 text-base" onClick={handleAccept}>
+      <button className="bg-accent-tint-600 rounded-md px-2 py-1 text-accent-shade-800 font-bold tracking-wider hover:bg-accent-tint-400 text-base" onClick={()=>handleAccept(request.id)}>
          <CheckRounded sx={{ fontSize: "1.2rem", strokeWidth: "0.1rem" ,stroke: "rgb(96,124,83)" }} />
       </button>
-      <button className="rounded-md bg-red-500 hover:bg-red-600 px-2 py-1 text-white" onClick={()=>handleReject(request._id)}>
+      <button className="rounded-md bg-red-500 hover:bg-red-600 px-2 py-1 text-white" onClick={()=>handleReject(request.id)}>
         Reject <CloseRounded sx={{ fontSize: "1.2rem", strokeWidth: "0.1rem" }} />
       </button>
     </section>

@@ -31,23 +31,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           });
           user.image = user.profileImage;
           user.name = `${user.firstName} ${user.lastName}`;
-          console.log("auth user", user);
           if (!user) {
             throw new CredentialsSignin("Invalid Email or password");
           }
-
           const passwordMatch = await bcrypt.compare(password, user.password);
           
           if (!passwordMatch) {
             throw new CredentialsSignin("Invalid Email or password");
           }
-
-          // Don't send the password back in the user object
           return user;
           
         } catch (error) {
-          console.log(error);
-          // Important: Return null instead of letting it fall through
           return null;
         }
       },

@@ -5,6 +5,7 @@ import {
   LockOutlined,
   SearchRounded,
   LogoutOutlined,
+  MoreVert,
 } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import useDebounce from "../_hooks/Debouncing";
@@ -17,7 +18,6 @@ import { BASE_URL } from "../_helper/Config";
 
 function InboxNav() {
   const session = useSession();
-  console.log("session", session);
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [inputValue, setInputValue] = useState("");
@@ -27,6 +27,7 @@ function InboxNav() {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const searchContainerRef = useRef(null);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   // Updated mock user list with avatar URLs
 
@@ -46,7 +47,7 @@ function InboxNav() {
         body: JSON.stringify({ username: debouncedSearch }),
       });
       const { users } = await response.json();
-      console.log("users received", users);
+
       setFilteredUsers(users);
     }
     fetchUsers();
@@ -76,10 +77,11 @@ function InboxNav() {
 
   const handleFocus = () => {
     setShowOverlay(true);
+    setShowMobileMenu(false);
   };
 
-  useEffect(()=>{
-    if(session.status === "authenticated"){
+  useEffect(() => {
+    if (session.status === "authenticated") {
       setUserData(session.data.user);
       setIsLoading(false);
     }
@@ -91,11 +93,18 @@ function InboxNav() {
         {!showOverlay && !inputValue && (
           <div className="flex flex-row items-center gap-2">
             <StyledAvatar alt={userData?.name} src={userData?.image} />
-            {isLoading ? (
-              <div className="hidden h-4 w-32 animate-pulse rounded bg-accent-tint-200 md:block"></div>
-            ) : (
-              <p className="hidden text-sm font-medium md:block">{userData?.name}</p>
-            )}
+            <div className="flex flex-col justify-center">
+              {userData?.name.split(" ").map((name) => {
+                return (
+                  <div
+                    key={name}
+                    className={`hidden text-sm font-semibold md:block ${isLoading && "block h-4 w-32 animate-pulse rounded bg-accent-tint-200"}`}
+                  >
+                    {name}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
         <div
@@ -134,7 +143,7 @@ function InboxNav() {
 
           {/* Overlay search results */}
           {showOverlay && inputValue && (
-            <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-80 overflow-y-auto rounded-b-lg bg-white shadow-lg transform origin-top transition-all duration-500 ease-out animate-slideDown">
+            <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-80 origin-top transform animate-slideDown overflow-y-auto rounded-b-lg bg-white shadow-lg transition-all duration-500 ease-out">
               {filteredUsers.length > 0 ? (
                 <ul className="py-2">
                   {filteredUsers.map((user) => (
@@ -149,20 +158,62 @@ function InboxNav() {
         </div>
         {!showOverlay && !inputValue && (
           <>
-            <button className="rounded-full p-2 text-base font-light group relative transition-all duration-200 ease-in-out hover:bg-accent-tint-400">
-              {isLocked ? <LockOutlined /> : <LockOpenOutlined />}
-              <AdditonalInfo>Lock</AdditonalInfo>
-            </button>
-            <button 
-              onClick={() => signOut({
-                callbackUrl: "/login",  // Redirect after signing out
-                redirect: true          // Whether to trigger redirect
-              })}
-              className="rounded-full p-2 text-base font-light transition-all duration-200 ease-in-out hover:bg-accent-tint-400 group relative"
-            >
-              <LogoutOutlined />
-              <AdditonalInfo>Sign out</AdditonalInfo>
-            </button>
+            {/* Desktop menu */}
+            <div className="hidden md:flex">
+              <button className="group relative rounded-full p-2 text-base font-light transition-all duration-200 ease-in-out hover:bg-accent-tint-400">
+                {isLocked ? <LockOutlined /> : <LockOpenOutlined />}
+                <AdditonalInfo>Lock</AdditonalInfo>
+              </button>
+              <button
+                onClick={() =>
+                  signOut({
+                    callbackUrl: "/login",
+                    redirect: true,
+                  })
+                }
+                className="group relative rounded-full p-2 text-base font-light transition-all duration-200 ease-in-out hover:bg-accent-tint-400"
+              >
+                <LogoutOutlined />
+                <AdditonalInfo>Sign out</AdditonalInfo>
+              </button>
+            </div>
+
+            {/* Mobile menu */}
+            <div className="relative md:hidden">
+              <button
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                className="rounded-full p-2 text-base font-light transition-all duration-200 ease-in-out hover:bg-accent-tint-400"
+              >
+                <MoreVert />
+              </button>
+
+              {/* Mobile menu overlay */}
+              {showMobileMenu && (
+                <div className="absolute right-0 top-full z-20 mt-1 w-48 rounded-lg bg-white shadow-lg">
+                  <div className="flex flex-col py-2">
+                    <button
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-accent-tint-400"
+                      onClick={() => setIsLocked(!isLocked)}
+                    >
+                      {isLocked ? <LockOutlined /> : <LockOpenOutlined />}
+                      <span>Lock</span>
+                    </button>
+                    <button
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-accent-tint-400"
+                      onClick={() =>
+                        signOut({
+                          callbackUrl: "/login",
+                          redirect: true,
+                        })
+                      }
+                    >
+                      <LogoutOutlined />
+                      <span>Sign out</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </>
         )}
       </nav>

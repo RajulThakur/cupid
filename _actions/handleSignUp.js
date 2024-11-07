@@ -29,17 +29,20 @@ export default async function handleSignUp(formData) {
         id: true,
       },
     });
-    console.log("newUser", newUser);
-    const friendsRecord = await prisma.friends.create({
+    await prisma.userStatus.create({
       data: {
-        user: {
-          connect: { id: newUser.id },  
-        },
-        friends: [],
-        requests: [],
+        userId: newUser.id,
+        isOnline: false,
+        lastSeen: new Date(),
       },
     });
-    console.log("friendsRecord", friendsRecord);
+    await prisma.friends.create({
+      data: {
+        userId: newUser.id,
+        friends: [],
+        requests: []
+      }
+    });
     return newUser.id;
   } catch (error) {
     if (error.name === "ZodError") {

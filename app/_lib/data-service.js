@@ -27,17 +27,6 @@ export async function getUserIdByEmail(email) {
   return user.id;
 }
 
-//CREATE USER
-export async function createUser(data) {
-  try {
-    return await prisma.user.create({
-      data: data
-    });
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
 //UPDATE USER
 export async function AddInfo(id, data) {
   return await prisma.user.update({

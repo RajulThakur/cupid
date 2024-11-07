@@ -11,7 +11,8 @@ export async function GET(req) {
   const { email } = user;
 
   const id = await getUserIdByEmail(email);
-  const requests = await prisma.friends.findUnique({
+  console.log(id);
+  const friendRecord = await prisma.friends.findUnique({
     where: {
       userId: id,
     },
@@ -20,15 +21,21 @@ export async function GET(req) {
     },
   });
 
+  // Handle case where no friend record exists
+  if (!friendRecord) {
+    return NextResponse.json({ senderData: [] }, { status: 200 });
+  }
+
   const senderData = await prisma.user.findMany({
     where: {
-      id: { in: requests.requests },
+      id: { in: friendRecord.requests },
     },
     select: {
       username: true,
       firstName: true,
       lastName: true,
       profileImage: true,
+      id: true,
     },
   });
   return NextResponse.json({ senderData }, { status: 200 });

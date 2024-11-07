@@ -1,8 +1,8 @@
 import InboxNav from "@/app/_components/InboxNav";
 import { SessionProvider } from "next-auth/react";
 export const metadata = {
-  title: "Direct",
-  description: "Direct messages",
+  title: "Inbox",
+  description: "Inbox",
 };
 export default async function InboxLayout({ children }) {
   return (

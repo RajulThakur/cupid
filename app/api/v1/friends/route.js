@@ -12,18 +12,20 @@ export async function GET(req) {
 
   const user = await getUserIdByEmail(email);
 
-  const friendsData = await prisma.friends.findFirst({
-    where: { userId: user }
+  const friends = await prisma.friends.findUnique({
+    where: { userId: user },
+    select: {
+      friends: true,
+    }
   });
-
-  if (!friendsData || !friendsData.friends) {
+  if (!friends || !friends?.friends) {
     return NextResponse.json({ friends: [] });
   }
 
   const friendUsers = await prisma.user.findMany({
     where: {
       id: {
-        in: friendsData.friends
+        in: friends.friends
       }
     },
     select: {
@@ -31,9 +33,15 @@ export async function GET(req) {
       firstName: true,
       lastName: true,
       profileImage: true,
-      id: true
+      id: true,
+      userStatus: {
+        select: {
+          isOnline: true,
+          lastSeen: true
+        }
+      }
     }
   });
-
+  console.log(friendUsers);
   return NextResponse.json({ friends: friendUsers });
 }

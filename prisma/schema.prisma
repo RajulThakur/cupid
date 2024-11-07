@@ -19,8 +19,8 @@ type MessagesMessages {
 // Friends model to store friends and friend requests
 model Friends {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  friends  String[]
-  requests String[]
+  friends  String[] @db.ObjectId
+  requests String[] @db.ObjectId
   userId   String   @db.ObjectId @unique
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -59,6 +59,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   friends Friends?
+  userStatus UserStatus?
 }
 
 // Auth.js account model
@@ -121,4 +122,13 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, credentialID])
+}
+
+model UserStatus {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String   @db.ObjectId @unique
+  lastSeen DateTime @db.Date
+  isOnline Boolean
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

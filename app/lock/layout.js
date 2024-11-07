@@ -4,6 +4,7 @@ import { Avatar } from "@mui/material";
 import bcrypt from "bcryptjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BASE_URL } from "../_helper/Config";
 
 function LockLayout({ children }) {
   const searchParams = useSearchParams();
@@ -40,7 +41,7 @@ function LockLayout({ children }) {
               if (isConfirm) {
                 const isMatch = bcrypt.compareSync(newPin, hashPin);
                 if (isMatch) {
-                  await fetch(`/api/user`, {
+                  await fetch(`${BASE_URL}/user`, {
                     method: "PATCH",
                     body: JSON.stringify({ pin: hashPin, id }),
                   });

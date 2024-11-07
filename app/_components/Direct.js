@@ -21,7 +21,7 @@ function Direct({ data }) {
 
   useEffect(() => {
     const isBrowser = typeof window !== "undefined";
-    const newSocket = isBrowser ? new WebSocket(`${process.env.WS_URL}`) : null;
+    const newSocket = isBrowser ? new WebSocket(`ws://localhost:8080`) : null;
     // Get the messages
     async function getMessages() {
       const res = await fetch(
@@ -52,6 +52,12 @@ function Direct({ data }) {
         }),
       );
     };
+    newSocket.onclose = async () => {
+      await fetch(`${BASE_URL}/updateStatus`, {
+        method: "POST",
+        body: JSON.stringify({ userId: userid, isOnline: false }),
+      });
+    };
     setSocket(newSocket);
 
     return () => {
@@ -79,9 +85,7 @@ function Direct({ data }) {
     bottomAuto.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleFileClick = (e) => {
-    console.log(e.target.files[0]);
-  };
+
 
   const handleSubmit = async () => {
     if (value.trim()) {
@@ -165,7 +169,6 @@ function Direct({ data }) {
               type="file"
               ref={inputFile}
               accept="image/*,video/*,audio/*"
-              onClick={handleFileClick}
               className="hidden"
             />
             <button

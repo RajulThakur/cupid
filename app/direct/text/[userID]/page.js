@@ -20,6 +20,10 @@ export default async function Page({ params }) {
       username: true
     }
   });
+  await prisma.userStatus.update({
+    where: { userId: user.id },
+    data: { isOnline: true }
+  });
   return (
     <div>
       <Direct
