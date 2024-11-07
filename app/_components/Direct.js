@@ -21,7 +21,11 @@ function Direct({ data }) {
 
   useEffect(() => {
     const isBrowser = typeof window !== "undefined";
-    const newSocket = isBrowser ? new WebSocket(`${process.env.WS_URL}`) : null;
+    const newSocket = isBrowser ? new WebSocket(`${process.env.WS_URL}`,{
+      headers: {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+      },
+    }) : null;
     // Get the messages
     async function getMessages() {
       const res = await fetch(
