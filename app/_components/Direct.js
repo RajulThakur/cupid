@@ -21,7 +21,7 @@ function Direct({ data }) {
 
   useEffect(() => {
     const isBrowser = typeof window !== "undefined";
-    const wsURL = `${process.env.WS_URL}`;
+    const wsURL = `wss://cupid-5f6c3fabade7.herokuapp.com/`;
     const newSocket = isBrowser ? new WebSocket(wsURL) : null;
     // Get the messages
     async function getMessages() {
