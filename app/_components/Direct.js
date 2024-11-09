@@ -123,6 +123,8 @@ function Direct({ data }) {
             createdAt: new Date(),
           }),
         );
+      } else {
+        console.error("WebSocket is not open. Ready state: ", socket.readyState);
       }
     }
   };
