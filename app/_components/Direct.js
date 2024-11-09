@@ -43,16 +43,18 @@ function Direct({ data }) {
     getMessages();
     getImages();
     // Connect to the server
-    newSocket.onopen = () => {
-      newSocket.send(
-        JSON.stringify({
-          type: "connection",
-          user: userid,
-          to,
-          createdAt: new Date(),
-        }),
-      );
-    };
+    if (newSocket) {
+      newSocket.onopen = () => {
+        newSocket.send(
+          JSON.stringify({
+            type: "connection",
+            user: userid,
+            to,
+            createdAt: new Date(),
+          }),
+        );
+      };
+    }
     newSocket.onclose = async () => {
       await fetch(`${BASE_URL}/updateStatus`, {
         method: "POST",
@@ -109,16 +111,19 @@ function Direct({ data }) {
           msgType: "text",
         }),
       });
-      socket.send(
-        JSON.stringify({
-          type: "message",
-          msgType: "text",
-          message: value,
-          user: userid,
-          to,
-          createdAt: new Date(),
-        }),
-      );
+      // Check socket state before sending
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(
+          JSON.stringify({
+            type: "message",
+            msgType: "text",
+            message: value,
+            user: userid,
+            to,
+            createdAt: new Date(),
+          }),
+        );
+      }
     }
   };
 
