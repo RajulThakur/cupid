@@ -20,9 +20,8 @@ function Direct({ data }) {
   const [friendProfileImage, setFriendProfileImage] = useState(null);
 
   useEffect(() => {
-    const isBrowser = typeof window !== "undefined";
-    const wsURL = `wss://cupid-5f6c3fabade7.herokuapp.com:46597/`;
-    const newSocket = isBrowser ? new WebSocket(wsURL) : null;
+    const wsURL = `wss://cupid-5f6c3fabade7.herokuapp.com:46597`;
+    const newSocket =  new WebSocket(wsURL)
     // Get the messages
     async function getMessages() {
       const res = await fetch(
