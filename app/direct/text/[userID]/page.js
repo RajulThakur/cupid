@@ -5,7 +5,8 @@ export const metadata = {
   title: "Text",
   description: "Text messages",
 };
-export default async function Page({ params }) {
+export default async function Page(props) {
+  const params = await props.params;
   const session = await auth();
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

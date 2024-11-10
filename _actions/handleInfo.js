@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 
 export default async function handleInfo(formData) {
   //GET URL OF PREVIOUS PAGE AND THEN ID FROM IT
-  const headersList = headers();
+  const headersList = await headers();
   const referer = headersList.get("referer");
   const url = new URL(referer);
   const id = url?.searchParams.get("id");
