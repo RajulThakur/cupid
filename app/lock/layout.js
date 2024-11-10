@@ -28,39 +28,49 @@ function LockLayout({ children }) {
   const handleClick = useCallback(
     (e) => {
       if (e === "Backspace" && pin.length > 0) {
-        inputRef[pin.length - 1].current.focus();
-        inputRef[pin.length - 1].current.value = "";
-        setPin((prev) => prev.slice(0, -1));
+        const currentRef = inputRef[pin.length - 1].current;
+        if (currentRef) {
+          currentRef.focus();
+          currentRef.value = "";
+          setPin((prev) => prev.slice(0, -1));
+        }
       } else if (isFinite(e) && pin.length < 4) {
-        inputRef[pin.length].current.focus();
-        inputRef[pin.length].current.value = e;
-        setPin((prev) => {
-          const newPin = prev + e;
-          if (newPin.length === 4) {
-            setTimeout(async () => {
-              if (isConfirm) {
-                const isMatch = bcrypt.compareSync(newPin, hashPin);
-                if (isMatch) {
-                  await fetch(`${BASE_URL}/user`, {
-                    method: "PATCH",
-                    body: JSON.stringify({ pin: hashPin, id }),
-                  });
-                  router.push(`/`);
+        const currentRef = inputRef[pin.length].current;
+        if (currentRef) {
+          currentRef.focus();
+          currentRef.value = e;
+          setPin((prev) => {
+            const newPin = prev + e;
+            if (newPin.length === 4) {
+              setTimeout(async () => {
+                if (isConfirm) {
+                  const isMatch = await bcrypt.compare(newPin, hashPin);
+                  if (isMatch) {
+                    await fetch(`${BASE_URL}/user`, {
+                      method: "PATCH",
+                      body: JSON.stringify({ pin: hashPin, id }),
+                    });
+                    router.push(`/`);
+                  }
                 }
-              }
-              if (setup) {
-                const hashedPin = bcrypt.hashSync(newPin, 7);
-                router.push(`/lock?id=${id}&pin=${hashedPin}&isconfirm=true`);
-              }
-              setPin("");
-              inputRef.forEach((input) => {
-                input.current.value = "";
-              });
-              inputRef[3].current.blur();
-            }, 100);
-          }
-          return newPin;
-        });
+                if (setup) {
+                  const hashedPin = bcrypt.hashSync(newPin, 7);
+                  router.push(`/lock?id=${id}&pin=${hashedPin}&isconfirm=true`);
+                }
+                setPin("");
+                inputRef.forEach((input) => {
+                  if (input.current) {
+                    input.current.value = "";
+                  }
+                });
+                if (inputRef[3].current) {
+                  inputRef[3].current.blur();
+                }
+              }, 100);
+            }
+            return newPin;
+          });
+        }
       }
     },
     [pin, inputRef, setup, id, isConfirm, hashPin, router],

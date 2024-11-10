@@ -16,7 +16,7 @@ function FriendRequest({ request,setRequests,requests }) {
     setRequests(newRequests);
     await fetch(`${BASE_URL}/requests/reject`, {
       method: "POST",
-      body: JSON.stringify({ sender: request.id }),
+      body: JSON.stringify({ receiver: request.id }),
     });
   }
   return (

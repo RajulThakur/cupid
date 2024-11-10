@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { useEdgeStore } from "../_lib/edgestore";
 import { uploadToDB } from "../_lib/uploadToDB";
 
-function ProfileEdit({ id }) {
+function ProfileEdit({ id, disabled }) {
   const [file, setFile] = useState(null);
   const [url, setUrl] = useState(null);
   const { edgestore } = useEdgeStore();
@@ -43,11 +43,11 @@ function ProfileEdit({ id }) {
           <Avatar sx={{ width: "8rem", height: "8rem" }} />
         )}
         {isUploading && (
-          <div className="absolute inset-0 flex items-center justify-center opacity-75 rounded-full bg-accent-tint-500">
+          <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm opacity-90  rounded-full bg-accent-tint-500">
             <CircularProgress
               variant="determinate"
               value={uploadProgress}
-              sx={{ color: "#adde95" }}
+              sx={{ color: "#3a4a32" }}
             />
             <div className="absolute text-xs">
               {Math.round(uploadProgress)}%
@@ -55,10 +55,10 @@ function ProfileEdit({ id }) {
           </div>
         )}
         <span
-          className="absolute bottom-0 right-0 rounded-2xl bg-accent-tint-500 p-2 opacity-95"
+          className="absolute bottom-0 right-0 rounded-2xl bg-accent-tint-500 p-2 opacity-90 "
           onClick={handleUpload}
         >
-          <CreateRounded sx={{ fill: "#adde95" }} />
+          <CreateRounded sx={{ fill: "#3a4a32" }} />
           <input
             ref={fileInputRef}
             className="absolute hidden h-0 w-0 overflow-hidden"

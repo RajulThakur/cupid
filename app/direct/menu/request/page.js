@@ -9,6 +9,12 @@ export default function RequestPage() {
   useEffect(() => {
 
     async function fetchRequests() {
+      async function initialFetch() {
+        const res = await fetch(`${BASE_URL}/requests/friend_requests`);
+        const data = await res.json();
+        if (data.senderData) setRequests(data.senderData);
+      }
+      initialFetch();
       interval.current = setInterval(async () => {
         const res = await fetch(`${BASE_URL}/requests/friend_requests`);
         const data = await res.json();

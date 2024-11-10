@@ -12,7 +12,7 @@ function SubmitButton() {
   return (
     <button
       disabled={pending}
-      className="w-full rounded-xl bg-accent-tint-700 py-3 text-base font-light  tracking-wide text-accent-shade-700 disabled:opacity-70"
+      className="w-full rounded-xl bg-accent-tint-700 py-3 text-base font-light tracking-wide text-accent-shade-700 disabled:opacity-70"
     >
       {pending ? "Logging in..." : "Login"}
     </button>
@@ -27,9 +27,7 @@ export default function LoginForm() {
       className="flex flex-col items-center gap-5 px-7"
       action={handleSubmit}
     >
-      <h1 className="text-7xl font-semibold tracking-wide">
-        <LogoBold />
-      </h1>
+      <LogoBold />
       <span className="select-none font-semibold text-accent-shade-700">
         Login with the Email
       </span>

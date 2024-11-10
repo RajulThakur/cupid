@@ -24,9 +24,9 @@ function SignupPage({searchParams}) {
           setIsSubmitting(true);
           try {
             await handleInfo(formData);
+            setIsSubmitting(false);
             router.push(`/lock?id=${searchParams.id}&setup=true`);
           } catch (error) {
-            setIsSubmitting(false);
             console.error(error);
           }
         }}
@@ -58,7 +58,7 @@ function SignupPage({searchParams}) {
           disabled={isSubmitting}
           className="w-full rounded-xl bg-accent-tint-700 py-3 text-xl font-semibold tracking-wider text-accent-shade-700 disabled:opacity-50"
         >
-          {isSubmitting ? "Submitting..." : "Signup"}
+          {isSubmitting ? <span className="spinner"></span> : "Signup"}
         </button>
       </form>
     </div>

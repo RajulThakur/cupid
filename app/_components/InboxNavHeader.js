@@ -40,7 +40,8 @@ function InboxNavHeader() {
           Request
         </TabButton>
 
-        <TabButton
+        {/* TODO: Add call feature */}
+        {/* <TabButton
           id={2}
           handleClick={() => {
             setActive(2);
@@ -48,7 +49,7 @@ function InboxNavHeader() {
           }}
         >
           Call
-        </TabButton>
+        </TabButton> */}
       </div>
     </header>
   );

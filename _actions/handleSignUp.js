@@ -3,7 +3,6 @@
 import prisma from "@/app/_lib/prisma";
 import { signUpSchema } from "@/app/_lib/zod";
 import bcrypt from "bcryptjs";
-
 export default async function handleSignUp(formData) {
   try {
     const email = formData.get("email");
@@ -52,7 +51,5 @@ export default async function handleSignUp(formData) {
       return "This email is already registered.";
     }
     return "An error occurred during sign up.";
-  } finally {
-    await prisma.$disconnect();
   }
 }

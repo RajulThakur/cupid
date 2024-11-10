@@ -23,7 +23,7 @@ function InboxNav() {
   const [inputValue, setInputValue] = useState("");
   const [isLocked, setIsLocked] = useState(false);
   const inputRef = useRef(null);
-  const debouncedSearch = useDebounce(inputValue, 500);
+  const debouncedSearch = useDebounce(inputValue);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const searchContainerRef = useRef(null);
   const [showOverlay, setShowOverlay] = useState(false);
@@ -160,10 +160,11 @@ function InboxNav() {
           <>
             {/* Desktop menu */}
             <div className="hidden md:flex">
-              <button className="group relative rounded-full p-2 text-base font-light transition-all duration-200 ease-in-out hover:bg-accent-tint-400">
+              {/* TODO: Add lock feature */}
+              {/* <button className="group relative rounded-full p-2 text-base font-light transition-all duration-200 ease-in-out hover:bg-accent-tint-400">
                 {isLocked ? <LockOutlined /> : <LockOpenOutlined />}
                 <AdditonalInfo>Lock</AdditonalInfo>
-              </button>
+              </button> */}
               <button
                 onClick={() =>
                   signOut({
