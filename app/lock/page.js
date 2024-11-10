@@ -1,12 +1,13 @@
 import prisma from "../_lib/prisma";
 
-export default async function LockPage({ searchParams }) {
+export default async function LockPage(props) {
+  const searchParams = await props.searchParams;
   const {id}= searchParams;
   const user = await prisma.user.findUnique({
     where: { id: id },
     select: { firstName: true, lastName: true }
   });
-  
+
   return (
     <section className="flex flex-col items-center justify-center">
       <p className="text-2xl">
