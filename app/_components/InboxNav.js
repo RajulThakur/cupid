@@ -192,13 +192,14 @@ function InboxNav() {
               {showMobileMenu && (
                 <div className="absolute right-0 top-full z-20 mt-1 w-48 rounded-lg bg-white shadow-lg">
                   <div className="flex flex-col py-2">
-                    <button
+                    {/* TODO: Add lock feature */}
+                    {/* <button
                       className="flex items-center gap-2 px-4 py-2 hover:bg-accent-tint-400"
                       onClick={() => setIsLocked(!isLocked)}
                     >
                       {isLocked ? <LockOutlined /> : <LockOpenOutlined />}
                       <span>Lock</span>
-                    </button>
+                    </button> */}
                     <button
                       className="flex items-center gap-2 px-4 py-2 hover:bg-accent-tint-400"
                       onClick={() =>
