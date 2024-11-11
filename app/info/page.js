@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState } from "react";
 import { FormControl, TextField } from "@mui/material";
 import GenderSel from "../_components/GenderSel";
 import InputField from "../_components/InputField";
@@ -11,8 +11,7 @@ import { EdgeStoreProvider } from "../_lib/edgestore";
 import handleInfo from "@/_actions/handleInfo";
 import { useRouter } from "next/navigation";
 
-function SignupPage(props) {
-  const searchParams = use(props.searchParams);
+function SignupPage({searchParams}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
