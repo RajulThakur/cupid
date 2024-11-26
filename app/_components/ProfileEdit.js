@@ -1,70 +1,98 @@
-"use client";
-import { CreateRounded } from "@mui/icons-material";
-import { Avatar, CircularProgress } from "@mui/material";
-import { useRef, useState } from "react";
-import { useEdgeStore } from "../_lib/edgestore";
-import { uploadToDB } from "../_lib/uploadToDB";
+'use client';
+import {storage} from '@/app/_lib/firebase';
+import {CreateRounded} from '@mui/icons-material';
+import {Avatar, CircularProgress} from '@mui/material';
+import {getDownloadURL, ref, uploadBytesResumable} from 'firebase/storage';
+import Image from 'next/image';
+import {useEffect, useRef, useState} from 'react';
 
-function ProfileEdit({ id, disabled }) {
-  const [file, setFile] = useState(null);
+function ProfileEdit({id}) {
   const [url, setUrl] = useState(null);
-  const { edgestore } = useEdgeStore();
   const fileInputRef = useRef(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
 
-  async function handleUpload() {
-    // Access the selected files from the input
-    fileInputRef.current.click();
+  useEffect(() => {
+    async function postImage() {
+      const res = await fetch(`/api/v1/image`, {
+        method: 'POST',
+        body: JSON.stringify({id, newImageURL: url}),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log('data', data);
+        setUrl(data.profileImage);
+      }
+    }
+    postImage();
+  }, [url, id]);
+
+  async function handleClick() {
+    fileInputRef.current?.click();
   }
 
-  async function handleClick(e) {
-    setFile(e.target.files?.[0]);
+  async function handleUpload(e) {
+    if (!e.target.files?.[0]) return;
+
     setIsUploading(true);
-    setFile(async (currentFile) => {
-      const res = await edgestore.publicFiles.upload({
-        file: currentFile,
-        onProgressChange: (progress) => {
-          setUploadProgress(progress);
-        },
-      });
-      setUrl(res.url);
-      await uploadToDB(res.url, id);
-      setIsUploading(false);
-      return currentFile;
-    });
+    const storageRef = ref(storage, `profile_photos/${id}`);
+    const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.error('Upload error:', error);
+        setIsUploading(false);
+      },
+      () => {
+        setIsUploading(false);
+        setUploadProgress(0);
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setUrl(downloadURL);
+        });
+      }
+    );
   }
   return (
     <div>
       <div className="relative h-32 w-32">
         {url ? (
-          <Avatar sx={{ width: "8rem", height: "8rem" }} src={url} />
+          <div className="h-32 w-32 overflow-hidden">
+            <Image
+              className="rounded-full object-cover"
+              fill
+              alt="profile photo"
+              src={url}
+            />
+          </div>
         ) : (
-          <Avatar sx={{ width: "8rem", height: "8rem" }} />
+          <Avatar sx={{width: '8rem', height: '8rem'}} />
         )}
         {isUploading && (
-          <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm opacity-90  rounded-full bg-accent-tint-500">
+          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-accent-tint-500 opacity-90 backdrop-blur-sm">
             <CircularProgress
               variant="determinate"
               value={uploadProgress}
-              sx={{ color: "#3a4a32" }}
+              sx={{color: '#3a4a32'}}
             />
-            <div className="absolute text-xs">
-              {Math.round(uploadProgress)}%
-            </div>
+            <div className="absolute text-xs">{Math.round(uploadProgress)}%</div>
           </div>
         )}
         <span
-          className="absolute bottom-0 right-0 rounded-2xl bg-accent-tint-500 p-2 opacity-90 "
-          onClick={handleUpload}
-        >
-          <CreateRounded sx={{ fill: "#3a4a32" }} />
+          className="absolute bottom-0 right-0 rounded-2xl bg-accent-tint-500 p-2 opacity-90"
+          onClick={handleClick}>
+          <CreateRounded sx={{fill: '#3a4a32'}} />
           <input
             ref={fileInputRef}
             className="absolute hidden h-0 w-0 overflow-hidden"
             type="file"
-            onChange={handleClick}
+            onChange={handleUpload}
             accept="images/*"
+            multiple={false}
           />
         </span>
       </div>

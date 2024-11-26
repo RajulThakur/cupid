@@ -1,8 +1,8 @@
-import LoginForm from "../_components/LoginForm";
-import SignUpNav from "../_components/SignUpNav";
+import LoginForm from '../_components/LoginForm';
+import SignUpNav from '../_components/SignUpNav';
 export const metadata = {
-  title: "Login",
-  description: "Login to your account",
+  title: 'Login',
+  description: 'Login to your account',
 };
 function SigninPage() {
   return (

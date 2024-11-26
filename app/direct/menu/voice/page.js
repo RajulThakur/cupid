@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Voice",
-  description: "Voice messages",
+  title: 'Voice',
+  description: 'Voice messages',
 };
 export default function VoicePage() {
   return (

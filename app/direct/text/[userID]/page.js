@@ -1,28 +1,28 @@
-import { auth } from "@/auth";
-import prisma from "@/app/_lib/prisma";
-import Direct from "../../../_components/Direct";
+import {auth} from '@/auth';
+import prisma from '@/app/_lib/prisma';
+import Direct from '../../../_components/Direct';
 export const metadata = {
-  title: "Text",
-  description: "Text messages",
+  title: 'Text',
+  description: 'Text messages',
 };
-export default async function Page({ params }) {
+export default async function Page({params}) {
   const session = await auth();
   const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { id: true, username: true }
+    where: {email: session.user.email},
+    select: {id: true, username: true},
   });
 
   const friend = await prisma.user.findUnique({
-    where: { id: params.userID },
+    where: {id: params.userID},
     select: {
       firstName: true,
       lastName: true,
-      username: true
-    }
+      username: true,
+    },
   });
   await prisma.userStatus.update({
-    where: { userId: user.id },
-    data: { isOnline: true }
+    where: {userId: user.id},
+    data: {isOnline: true},
   });
   return (
     <div>

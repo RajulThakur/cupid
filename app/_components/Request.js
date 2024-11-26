@@ -1,7 +1,7 @@
 function RequestsPage() {
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Requests</h2>
+      <h2 className="mb-4 text-xl font-bold">Requests</h2>
     </div>
   );
 }

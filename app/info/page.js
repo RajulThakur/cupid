@@ -1,15 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { FormControl, TextField } from "@mui/material";
-import GenderSel from "../_components/GenderSel";
-import InputField from "../_components/InputField";
-import ProfileEdit from "../_components/ProfileEdit";
-import RelSelect from "../_components/RelSelect";
-import SignUpNav from "../_components/SignUpNav";
-import { EdgeStoreProvider } from "../_lib/edgestore";
-import handleInfo from "@/_actions/handleInfo";
-import { useRouter } from "next/navigation";
+import {useState} from 'react';
+import {FormControl, TextField} from '@mui/material';
+import GenderSel from '../_components/GenderSel';
+import InputField from '../_components/InputField';
+import ProfileEdit from '../_components/ProfileEdit';
+import RelSelect from '../_components/RelSelect';
+import SignUpNav from '../_components/SignUpNav';
+import handleInfo from '@/_actions/handleInfo';
+import {useRouter} from 'next/navigation';
 
 function SignupPage({searchParams}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,14 +28,22 @@ function SignupPage({searchParams}) {
           } catch (error) {
             console.error(error);
           }
-        }}
-      >
-        <EdgeStoreProvider>
-          <ProfileEdit disabled={isSubmitting} id={searchParams.id} />
-        </EdgeStoreProvider>
+        }}>
+        <ProfileEdit
+          disabled={isSubmitting}
+          id={searchParams.id}
+        />
         <div className="flex gap-2">
-          <InputField label="First Name" name="firstName" disabled={isSubmitting} />
-          <InputField label="Last Name" name="lastName" disabled={isSubmitting} />
+          <InputField
+            label="First Name"
+            name="firstName"
+            disabled={isSubmitting}
+          />
+          <InputField
+            label="Last Name"
+            name="lastName"
+            disabled={isSubmitting}
+          />
         </div>
         <FormControl fullWidth>
           <GenderSel disabled={isSubmitting} />
@@ -53,12 +60,11 @@ function SignupPage({searchParams}) {
           variant="filled"
           disabled={isSubmitting}
         />
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-xl bg-accent-tint-700 py-3 text-xl font-semibold tracking-wider text-accent-shade-700 disabled:opacity-50"
-        >
-          {isSubmitting ? <span className="spinner"></span> : "Signup"}
+          className="w-full rounded-xl bg-accent-tint-700 py-3 text-xl font-semibold tracking-wider text-accent-shade-700 disabled:opacity-50">
+          {isSubmitting ? <span className="spinner"></span> : 'Signup'}
         </button>
       </form>
     </div>

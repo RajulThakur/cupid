@@ -1,6 +1,6 @@
-import { TextField } from "@mui/material";
+import {TextField} from '@mui/material';
 
-function InputField({ label, name, isError, ErrMessage }) {
+function InputField({label, name, isError, ErrMessage}) {
   if (isError) {
     return (
       <TextField
@@ -20,8 +20,8 @@ function InputField({ label, name, isError, ErrMessage }) {
         slotProps={{
           formHelperText: {
             sx: {
-              fontSize: "10px",
-              marginLeft: "1px",
+              fontSize: '10px',
+              marginLeft: '1px',
             },
           },
         }}

@@ -1,20 +1,18 @@
-import BackButton from "./BackButton"
+import BackButton from './BackButton';
 
-function SignUpNav({heading=''}) {
+function SignUpNav({heading = ''}) {
   return (
-    <nav className='flex absolute top-0 left-0 right-0 w-svw items-center justify-between px-3 py-1'>
-        <div className='flex items-center gap-2 justify-self-start'>
-          <BackButton/>
-          <span className='font-semibold text-accent-shade-500 text-xl'>
-            Back
-          </span>
-        </div>
-        <h3 className='font-bold text-2xl  absolute left-1/2 transform -translate-x-1/2'>
-          {`${heading}`}
-        </h3>
-        <div className="w-12"></div>
-      </nav>
-  )
+    <nav className="absolute left-0 right-0 top-0 flex w-svw items-center justify-between px-3 py-1">
+      <div className="flex items-center gap-2 justify-self-start">
+        <BackButton />
+        <span className="text-xl font-semibold text-accent-shade-500">Back</span>
+      </div>
+      <h3 className="absolute left-1/2 -translate-x-1/2 transform text-2xl font-bold">
+        {`${heading}`}
+      </h3>
+      <div className="w-12"></div>
+    </nav>
+  );
 }
 
-export default SignUpNav
+export default SignUpNav;

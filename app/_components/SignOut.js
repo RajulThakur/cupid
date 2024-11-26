@@ -1,19 +1,18 @@
-import { signOut } from "@/auth";
-import { Logout } from "@mui/icons-material";
+import {signOut} from '@/auth';
+import {Logout} from '@mui/icons-material';
 
 function SignOut() {
   return (
     <form
       action={async () => {
-        "use server";
-        await signOut("credentials",{ redirectTo: "/" });
-      }}
-    >
+        'use server';
+        await signOut('credentials', {redirectTo: '/'});
+      }}>
       <button>
         <Logout
           sx={{
-            ":hover": {
-              fill: "red",
+            ':hover': {
+              fill: 'red',
             },
           }}
         />

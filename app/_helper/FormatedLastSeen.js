@@ -16,5 +16,5 @@ export default function FormattedLastSeen(lastSeen) {
   if (diffMinutes > 0) {
     return `${diffMinutes}min ago`;
   }
-  return "Just now";
+  return 'Just now';
 }

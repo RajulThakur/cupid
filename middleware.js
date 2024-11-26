@@ -1,4 +1,4 @@
-import { auth } from "./auth";
+import {auth} from './auth';
 
 /*import { NextResponse } from "next/server";
 
@@ -13,5 +13,5 @@ export const middleware = function (request) {
   return response;
 };
 export const config = {
-  matcher: ["/direct/:path*","/api/v1/:path*"],
+  matcher: ['/direct/:path*', '/api/v1/:path*'],
 };

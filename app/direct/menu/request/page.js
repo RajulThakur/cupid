@@ -1,13 +1,12 @@
-'use client'
-import FriendRequests from "@/app/_components/FriendRequests";
-import { useEffect, useState, useRef } from "react";
-import { BASE_URL } from "@/app/_helper/Config";
+'use client';
+import FriendRequests from '@/app/_components/FriendRequests';
+import {useEffect, useState, useRef} from 'react';
+import {BASE_URL} from '@/app/_helper/Config';
 export default function RequestPage() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const interval = useRef(null);
   useEffect(() => {
-
     async function fetchRequests() {
       async function initialFetch() {
         const res = await fetch(`${BASE_URL}/requests/friend_requests`);
@@ -27,7 +26,14 @@ export default function RequestPage() {
   }, []);
   return (
     <div>
-      {loading ? <p>Loading...</p> : <FriendRequests requests={requests} setRequests={setRequests} />}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <FriendRequests
+          requests={requests}
+          setRequests={setRequests}
+        />
+      )}
     </div>
   );
 }

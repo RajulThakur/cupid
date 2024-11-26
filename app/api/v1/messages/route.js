@@ -1,26 +1,21 @@
-import prisma from "@/app/_lib/prisma";
-import { ObjectId } from "mongodb";
-import { NextResponse } from "next/server";
+import prisma from '@/app/_lib/prisma';
+import {set} from 'firebase/database';
+import {ObjectId} from 'mongodb';
+import {NextResponse} from 'next/server';
 
 export async function GET(req) {
-
   const url = new URL(req.url);
   const searchParams = url.searchParams;
-  let usernameA = searchParams.get("usernameA");
-  let usernameB = searchParams.get("usernameB");
-  let user1 = searchParams.get("user1");
-  let user2 = searchParams.get("user2");
+  let usernameA = searchParams.get('usernameA');
+  let usernameB = searchParams.get('usernameB');
+  let user1 = searchParams.get('user1');
+  let user2 = searchParams.get('user2');
 
   if (usernameA < usernameB) {
     [user1, user2] = [user2, user1];
   }
 
-  let messages = await prisma.messages.findFirst({
-    where: {
-      userA: user1,
-      userB: user2,
-    }
-  });
+  let messages = await set(ref(database, `${user1}_${user2}`));
 
   if (!messages) {
     messages = await prisma.messages.create({
@@ -28,19 +23,18 @@ export async function GET(req) {
         userA: user1,
         userB: user2,
         messages: [],
-        createdAt: new Date()
-      }
+        createdAt: new Date(),
+      },
     });
   }
 
   const data = messages.messages.slice(-10);
-  return NextResponse.json({ messages: data });
+  return NextResponse.json({messages: data});
 }
 
 export async function POST(req) {
-
   const body = await req.json();
-  let { usernameA, usernameB, from, message, user1, user2, msgType } = body;
+  let {usernameA, usernameB, from, message, user1, user2, msgType} = body;
 
   if (usernameA < usernameB) {
     [user1, user2] = [user2, user1];
@@ -50,7 +44,7 @@ export async function POST(req) {
     where: {
       userA: user1,
       userB: user2,
-    }
+    },
   });
 
   if (!messageDoc) {
@@ -59,13 +53,13 @@ export async function POST(req) {
         userA: user1,
         userB: user2,
         messages: [],
-        createdAt: new Date()
-      }
+        createdAt: new Date(),
+      },
     });
   }
 
   await prisma.messages.update({
-    where: { id: messageDoc.id },
+    where: {id: messageDoc.id},
     data: {
       messages: {
         push: {
@@ -73,11 +67,11 @@ export async function POST(req) {
           from,
           message,
           msgType,
-          createdAt: new Date()
-        }
-      }
-    }
+          createdAt: new Date(),
+        },
+      },
+    },
   });
 
-  return NextResponse.json({ message: "Message sent" });
+  return NextResponse.json({message: 'Message sent'});
 }

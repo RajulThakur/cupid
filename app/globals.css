@@ -52,12 +52,16 @@ body {
   aspect-ratio: 1;
   border-radius: 50%;
   padding: 3px;
-  background: 
-    radial-gradient(farthest-side,rgb(154, 198, 133) 95%,#0000) 50% 0/12px 12px no-repeat,
-    radial-gradient(farthest-side,#0000 calc(100% - 5px),#9ac685 calc(100% - 4px)) content-box;
-  animation: l6 2s infinite ;
+  background:
+    radial-gradient(farthest-side, rgb(154, 198, 133) 95%, #0000) 50% 0/12px 12px no-repeat,
+    radial-gradient(farthest-side, #0000 calc(100% - 5px), #9ac685 calc(100% - 4px)) content-box;
+  animation: l6 2s infinite;
 }
-@keyframes l6 {to{transform: rotate(1turn)}}
+@keyframes l6 {
+  to {
+    transform: rotate(1turn);
+  }
+}
 
 .ripple {
   position: absolute;

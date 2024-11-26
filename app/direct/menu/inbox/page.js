@@ -1,8 +1,8 @@
-'use client'
-import InboxMsgContainer from "@/app/_components/InboxMsgContainer";
-import InboxMsgContainerSkeleton from "@/app/_components/InboxMsgContainerSkeleton";
-import { BASE_URL } from "@/app/_helper/Config";
-import { useEffect, useState } from "react";
+'use client';
+import InboxMsgContainer from '@/app/_components/InboxMsgContainer';
+import InboxMsgContainerSkeleton from '@/app/_components/InboxMsgContainerSkeleton';
+import {BASE_URL} from '@/app/_helper/Config';
+import {useEffect, useState} from 'react';
 
 function DirectMessagesPage() {
   const [friends, setFriends] = useState(null);
@@ -15,16 +15,15 @@ function DirectMessagesPage() {
     fetchFriends();
   }, []);
   return (
-    <div className={`gap-2 flex flex-col ${!friends ? "overflow-y-hidden" : ""}`}>
-      {!friends ? (
-        Array.from({ length: 7 }).map((_, index) => (
-          <InboxMsgContainerSkeleton key={index} />
-        ))
-      ) : (
-        friends.map((friend) => (
-          <InboxMsgContainer key={friend.id} friend={friend} />
-        ))
-      )}
+    <div className={`flex flex-col gap-2 ${!friends ? 'overflow-y-hidden' : ''}`}>
+      {!friends
+        ? Array.from({length: 7}).map((_, index) => <InboxMsgContainerSkeleton key={index} />)
+        : friends.map((friend) => (
+            <InboxMsgContainer
+              key={friend.id}
+              friend={friend}
+            />
+          ))}
     </div>
   );
 }

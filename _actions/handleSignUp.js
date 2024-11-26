@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import prisma from "@/app/_lib/prisma";
-import { signUpSchema } from "@/app/_lib/zod";
-import bcrypt from "bcryptjs";
+import prisma from '@/app/_lib/prisma';
+import {signUpSchema} from '@/app/_lib/zod';
+import bcrypt from 'bcryptjs';
 export default async function handleSignUp(formData) {
   try {
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const username = formData.get("username");
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const username = formData.get('username');
     const {
       email: Email,
       password: Password,
@@ -39,17 +39,17 @@ export default async function handleSignUp(formData) {
       data: {
         userId: newUser.id,
         friends: [],
-        requests: []
-      }
+        requests: [],
+      },
     });
     return newUser.id;
   } catch (error) {
-    if (error.name === "ZodError") {
-      return "Validation failed. Please check your inputs.";
+    if (error.name === 'ZodError') {
+      return 'Validation failed. Please check your inputs.';
     }
-    if (error.code === "P2002") {
-      return "This email is already registered.";
+    if (error.code === 'P2002') {
+      return 'This email is already registered.';
     }
-    return "An error occurred during sign up.";
+    return 'An error occurred during sign up.';
   }
 }

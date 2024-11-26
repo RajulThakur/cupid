@@ -1,14 +1,23 @@
-"use client";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import * as React from "react";
+'use client';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import * as React from 'react';
 
-const status = ["Happily Married", "Pta nahi bagwan jane","Single","In a Relationship","Complicated","Open to Relationships","Married","In an Open Relationship"];
+const status = [
+  'Happily Married',
+  'Pta nahi bagwan jane',
+  'Single',
+  'In a Relationship',
+  'Complicated',
+  'Open to Relationships',
+  'Married',
+  'In an Open Relationship',
+];
 
 export default function RelSelect() {
-  const [relStatus, setRelStatus] = React.useState("");
+  const [relStatus, setRelStatus] = React.useState('');
   const handleChange = (event) => {
     setRelStatus(event.target.value);
   };
@@ -21,10 +30,11 @@ export default function RelSelect() {
         value={relStatus}
         label="Relationship"
         name="relationshipStatus"
-        onChange={handleChange}
-      >
+        onChange={handleChange}>
         {status.map((relsta) => (
-          <MenuItem value={relsta} key={relsta}>
+          <MenuItem
+            value={relsta}
+            key={relsta}>
             {`${relsta}`}
           </MenuItem>
         ))}
