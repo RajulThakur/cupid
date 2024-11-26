@@ -1,4 +1,4 @@
-import prisma from '../_lib/prisma';
+import prisma from '../../prisma/prisma';
 
 export default async function LockPage(props) {
   const searchParams = await props.searchParams;

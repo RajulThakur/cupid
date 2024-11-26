@@ -1,5 +1,5 @@
 'use client';
-import {storage} from '@/app/_lib/firebase';
+import {storage} from '@/app/_firebase/firebase';
 import {CreateRounded} from '@mui/icons-material';
 import {Avatar, CircularProgress} from '@mui/material';
 import {getDownloadURL, ref, uploadBytesResumable} from 'firebase/storage';

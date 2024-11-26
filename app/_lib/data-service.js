@@ -1,5 +1,5 @@
 'use server';
-import prisma from './prisma';
+import prisma from '../../prisma/prisma';
 ///GET USER
 export async function getUserByEmail(email) {
   const user = await prisma.user.findUnique({

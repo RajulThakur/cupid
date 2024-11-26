@@ -1,5 +1,5 @@
 import {NextResponse} from 'next/server';
-import prisma from '@/app/_lib/prisma';
+import prisma from '@/prisma/prisma';
 export async function POST(req) {
   const {userId, isOnline} = await req.json();
   const lastSeen = new Date();

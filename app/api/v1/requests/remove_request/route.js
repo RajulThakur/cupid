@@ -1,5 +1,5 @@
 import {getUserIdByEmail} from '@/app/_lib/data-service';
-import prisma from '@/app/_lib/prisma';
+import prisma from '@/prisma/prisma';
 import {auth} from '@/auth';
 import {NextResponse} from 'next/server';
 

@@ -1,4 +1,4 @@
-import prisma from '@/app/_lib/prisma';
+import prisma from '@/prisma/prisma';
 import {set} from 'firebase/database';
 import {ObjectId} from 'mongodb';
 import {NextResponse} from 'next/server';

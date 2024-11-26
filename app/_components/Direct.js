@@ -12,7 +12,7 @@ import {
   set,
 } from 'firebase/database';
 import {useEffect, useRef, useState} from 'react';
-import {database} from '../_lib/firebase';
+import {database} from '../_firebase/firebase';
 import MessageComponent from './Message';
 
 function Direct({data}) {

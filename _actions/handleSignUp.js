@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from '@/app/_lib/prisma';
+import prisma from '@/prisma/prisma';
 import {signUpSchema} from '@/app/_lib/zod';
 import bcrypt from 'bcryptjs';
 export default async function handleSignUp(formData) {

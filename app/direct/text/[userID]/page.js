@@ -1,5 +1,5 @@
 import {auth} from '@/auth';
-import prisma from '@/app/_lib/prisma';
+import prisma from '@/prisma/prisma';
 import Direct from '../../../_components/Direct';
 export const metadata = {
   title: 'Text',

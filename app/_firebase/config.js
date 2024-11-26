@@ -1,8 +1,3 @@
-
-import {initializeApp} from 'firebase/app';
-import {getAnalytics} from 'firebase/analytics';
-import {getDatabase} from 'firebase/database';
-import {getStorage} from 'firebase/storage';
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -14,8 +9,4 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const database = getDatabase(app);
-export const storage = getStorage(app);
-export const analytics = getAnalytics(app);
+export default firebaseConfig; 

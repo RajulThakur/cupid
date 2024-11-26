@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from '@/app/_lib/prisma';
+import prisma from '@/prisma/prisma';
 import {NextResponse} from 'next/server';
 
 export async function PATCH(req) {
