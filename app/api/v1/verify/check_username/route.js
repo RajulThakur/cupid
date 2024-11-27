@@ -7,11 +7,12 @@ export async function POST(req) {
     const {username} = body;
     const user = await prisma.user.findUnique({
       where: {username},
+      select: {username: true, isCompleted: true},
     });
 
-    return NextResponse.json({available: !user}, {status: 200});
+    return NextResponse.json({available: !user || !user?.isCompleted}, {status: 200});
   } catch (error) {
     console.error('Error checking username:', error);
-    return NextResponse.json({error: 'Internal Server Error'}, {status: 500});
+    return NextResponse.json({available: false}, {status: 500});
   }
 }

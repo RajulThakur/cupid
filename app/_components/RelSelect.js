@@ -4,6 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import * as React from 'react';
+import FormHelperText from '@mui/material/FormHelperText';
 
 const status = [
   'Happily Married',
@@ -16,13 +17,14 @@ const status = [
   'In an Open Relationship',
 ];
 
-export default function RelSelect() {
+export default function RelSelect({ disabled, isError, ErrMessage, setErrorMsg }) {
   const [relStatus, setRelStatus] = React.useState('');
   const handleChange = (event) => {
     setRelStatus(event.target.value);
+    setErrorMsg({ ...isError, relationship: '' });
   };
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth error={Boolean(isError?.relationship)}>
       <InputLabel id="relationship-label">Relationship</InputLabel>
       <Select
         labelId="relationship-label"
@@ -30,7 +32,9 @@ export default function RelSelect() {
         value={relStatus}
         label="Relationship"
         name="relationshipStatus"
-        onChange={handleChange}>
+        onChange={handleChange}
+        disabled={disabled}
+      >
         {status.map((relsta) => (
           <MenuItem
             value={relsta}
@@ -39,6 +43,9 @@ export default function RelSelect() {
           </MenuItem>
         ))}
       </Select>
+      {isError?.relationship && (
+        <FormHelperText>{ErrMessage?.relationship?._errors}</FormHelperText>
+      )}
     </FormControl>
   );
 }

@@ -6,6 +6,7 @@ function FriendRequest({request, setRequests, requests}) {
   async function handleAccept(id) {
     const newRequests = requests.filter((request) => request.id !== id);
     setRequests(newRequests);
+    
     await fetch(`${BASE_URL}/requests/add`, {
       method: 'POST',
       body: JSON.stringify({sender: request.id}),

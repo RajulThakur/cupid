@@ -12,6 +12,3 @@ const app = initializeApp(firebaseConfig);
 // Initialize services
 export const database = getDatabase(app);
 export const storage = getStorage(app);
-
-// Initialize analytics with support check
-export const analytics = await initializeAnalytics(app);

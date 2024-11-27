@@ -39,6 +39,7 @@ model User {
   id                 String    @id @default(auto()) @map("_id") @db.ObjectId
   email              String    @unique(map: "email")
   username           String    @unique(map: "username")
+  isCompleted        Boolean   @default(false)
   password           String
   bio                String?
   firstName          String?

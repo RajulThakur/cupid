@@ -26,7 +26,8 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             });
 
           const user = await prisma.user.findUnique({
-            where: {email},
+            where: {email, isCompleted: true},
+
           });
           user.image = user.profileImage;
           user.name = `${user.firstName} ${user.lastName}`;

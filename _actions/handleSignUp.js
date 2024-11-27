@@ -2,12 +2,9 @@
 
 import prisma from '@/prisma/prisma';
 import {signUpSchema} from '@/app/_lib/zod';
-import bcrypt from 'bcryptjs';
 export default async function handleSignUp(formData) {
   try {
-    const email = formData.get('email');
-    const password = formData.get('password');
-    const username = formData.get('username');
+    const {email, password, username} = formData;
     const {
       email: Email,
       password: Password,
@@ -17,12 +14,28 @@ export default async function handleSignUp(formData) {
       password,
       username,
     });
-    const hashPass = await bcrypt.hash(Password, 7);
+    //cheacking if the email is already in use and if the user is completed
+    const user = await prisma.user.findUnique({
+      where: {email: Email},
+      select: {email: true, isCompleted: true},
+    });
+    //check if the isCompleted is false
+    if (user && !user.isCompleted) {
+      const updatedUser = await prisma.user.update({
+        where: {email: Email},
+        data: {password: Password, username: Username},
+        select: {
+          id: true,
+        },
+      });
+      return updatedUser.id;
+    }
     const newUser = await prisma.user.create({
       data: {
         email: Email,
-        password: hashPass,
+        password: Password,
         username: Username,
+        isCompleted: false,
       },
       select: {
         id: true,
@@ -44,12 +57,6 @@ export default async function handleSignUp(formData) {
     });
     return newUser.id;
   } catch (error) {
-    if (error.name === 'ZodError') {
-      return 'Validation failed. Please check your inputs.';
-    }
-    if (error.code === 'P2002') {
-      return 'This email is already registered.';
-    }
-    return 'An error occurred during sign up.';
+    throw new Error(error.message);
   }
 }

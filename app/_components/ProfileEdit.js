@@ -20,7 +20,6 @@ function ProfileEdit({id}) {
       });
       if (res.ok) {
         const data = await res.json();
-        console.log('data', data);
         setUrl(data.profileImage);
       }
     }

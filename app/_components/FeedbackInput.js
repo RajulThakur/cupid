@@ -4,39 +4,49 @@ import {useEffect, useState} from 'react';
 import {BASE_URL} from '../_helper/Config';
 import useDebounce from '../_hooks/Debouncing';
 
-function Username({name, label}) {
+function FeedbackInput({name, label, errorMsg = '', setError, setErrorMsg}) {
   const [value, setValue] = useState('');
-  const [isError, setIsError] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
   const debounceSearch = useDebounce(value);
   const handleChange = (e) => {
     setValue(e.target.value.trim());
-    setIsError(false);
+    setIsAvailable(true);
+    setErrorMsg((prev) => ({...prev, [name]: null}));
+    setError(false);
   };
 
   useEffect(() => {
     const check = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/check_username`, {
+        const response = await fetch(`${BASE_URL}/verify/check_${name}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({username: debounceSearch}),
+          body: JSON.stringify({[name]: debounceSearch}),
         });
 
         const result = await response.json();
-        if (!result.available) setIsError(true);
+        console.log(result);
+        if (!result.available) {
+          console.log('not available');
+          setIsAvailable(false);
+        }
       } catch (error) {
+        setIsAvailable(false);
         console.error('Error checking username:', error);
       }
     };
     check();
-  }, [debounceSearch]);
+  }, [debounceSearch, name, setError]);
 
   return (
     <TextField
-      error={isError}
-      helperText={isError ? 'Username is already taken' : ' '}
+      error={!isAvailable || errorMsg?._errors?.[0]}
+      helperText={
+        (!isAvailable ? `${label} is already taken` : '') ||
+        errorMsg?._errors?.[0]
+      }
       value={value}
       onChange={handleChange}
       label={label}
@@ -55,4 +65,4 @@ function Username({name, label}) {
   );
 }
 
-export default Username;
+export default FeedbackInput;
