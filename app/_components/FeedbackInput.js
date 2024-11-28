@@ -27,14 +27,11 @@ function FeedbackInput({name, label, errorMsg = '', setError, setErrorMsg}) {
         });
 
         const result = await response.json();
-        console.log(result);
         if (!result.available) {
-          console.log('not available');
           setIsAvailable(false);
         }
       } catch (error) {
         setIsAvailable(false);
-        console.error('Error checking username:', error);
       }
     };
     check();

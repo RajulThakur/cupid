@@ -2,36 +2,30 @@
 import {signInSchema} from '@/app/_lib/zod';
 import {signIn} from '@/auth';
 import prisma from '@/prisma/prisma';
-import {CredentialsSignin} from 'next-auth';
-import {redirect} from 'next/navigation';
-
 export default async function handleSignIn(formData) {
-  console.log('Login email', formData.email);
-  console.log('Login password', formData.password);
   try {
-    const {email, password} = formData;
-    const {email: parsedEmail, password: parsedPassword} = await signInSchema.parseAsync({
-      email,
-      password,
+    const {email, password} = await signInSchema.parseAsync({
+      email: formData.email,
+      password: formData.password,
     });
+    console.log('parsedEmail', email);
+    console.log('parsedPassword', password);
     //check if email exits in the database
     const user = await prisma.user.findUnique({
-      where: {email: parsedEmail},
+      where: {email},
+      select: {isCompleted: true},
     });
-    if (!user) {
-      throw new Error('User not found or not completed');
+    if (!user || !user.isCompleted) {
+      throw new Error('User not found');
     }
     const response = await signIn('credentials', {
-      email: parsedEmail,
-      password: parsedPassword,
+      email,
+      password,
       redirect: false,
     });
-    if (response?.ok) {
-      redirect('/direct/menu/inbox');
-    } else {
-      console.log('Sign-in error:', response.error);
-    }
+    return response;
+
   } catch (error) {
-    throw new Error(error.cause.err);
+    throw new Error(error?.cause?.err || error.message);
   }
 }

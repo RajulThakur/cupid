@@ -8,9 +8,11 @@ import LogoBold from './LogoBold';
 import PasswordField from './PasswordField';
 import handleSignIn from '@/_actions/handleSignIn';
 import {ZodError} from 'zod';
+import { useRouter } from 'next/navigation';
 
 export default function SignInForm() {
   const {pending} = useFormStatus();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isError, setIsError] = useState(false);
@@ -20,12 +22,16 @@ export default function SignInForm() {
   };
   const handleSubmit = async (event) => {
     try {
-      event.preventDefault();
       setIsLoading(true);
+      event.preventDefault();
       const email = event.target.email.value;
       const password = event.target.password.value;
       await signInSchema.parseAsync({email, password});
-      await handleSignIn({email, password});
+      const response = await handleSignIn({email, password});
+      console.log('response', response);
+      if (response) {
+        router.push('/direct/menu/inbox');
+      }
     } catch (error) {
       let errorObj = {};
       if (error instanceof ZodError) {

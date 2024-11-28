@@ -14,14 +14,12 @@ function ProfileEdit({id}) {
 
   useEffect(() => {
     async function postImage() {
-      const res = await fetch(`/api/v1/image`, {
+      const response = await fetch(`/api/v1/image`, {
         method: 'POST',
         body: JSON.stringify({id, newImageURL: url}),
       });
-      if (res.ok) {
-        const data = await res.json();
-        setUrl(data.profileImage);
-      }
+      const data = await response.json();
+      console.log('data', data);
     }
     postImage();
   }, [url, id]);
@@ -60,10 +58,11 @@ function ProfileEdit({id}) {
     <div>
       <div className="relative h-32 w-32">
         {url ? (
-          <div className="h-32 w-32 overflow-hidden">
+          <div className="h-32 w-32 overflow-hidden relative">
             <Image
               className="rounded-full object-cover"
               fill
+              sizes="auto"
               alt="profile photo"
               src={url}
             />

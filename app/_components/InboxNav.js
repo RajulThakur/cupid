@@ -168,7 +168,7 @@ function InboxNav() {
               <button
                 onClick={() =>
                   signOut({
-                    callbackUrl: '/login',
+                    callbackUrl: '/signin',
                     redirect: true,
                   })
                 }
@@ -202,7 +202,7 @@ function InboxNav() {
                       className="flex items-center gap-2 px-4 py-2 hover:bg-accent-tint-400"
                       onClick={() =>
                         signOut({
-                          callbackUrl: '/login',
+                          callbackUrl: '/signin',
                           redirect: true,
                         })
                       }>

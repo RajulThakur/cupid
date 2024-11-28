@@ -15,19 +15,33 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
       },
       authorize: async (credentials) => {
         try {
+          console.log('credentials', credentials);
+          if (!credentials?.email || !credentials?.password) {
+            throw new Error('Provide both email and password');
+          }
+
           const {email, password} = await signInSchema.parseAsync({
             email: credentials.email,
             password: credentials.password,
           });
 
-          if (!email || !password) throw new Error('Provide both email and password');
           const user = await prisma.user.findUnique({
             where: {email},
-            select: {isCompleted: true},
+            select: {
+              id: true,
+              email: true,
+              password: true,
+              isCompleted: true,
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+            },
           });
+          
           if (!user) {
             throw new Error('Invalid Email or password');
           }
+
           if (!user.isCompleted) {
             throw new Error('User not completed');
           }
@@ -40,6 +54,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
           }
           return user;
         } catch (error) {
+          console.log('Auth error:', error);
           throw error;
         }
       },
@@ -49,6 +64,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
     strategy: 'jwt', // Enable JWT strategy
   },
   pages: {
-    signIn: '/login',
+    signIn: '/signin',
   },
 });
