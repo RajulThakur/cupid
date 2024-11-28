@@ -41,7 +41,7 @@ function Direct({data}) {
       const snapshot = await get(messagesQuery);
       if (snapshot.exists()) {
         const messagesData = snapshot.val();
-        console.log('messagesData', messagesData);
+        
         const messagesList = Object.entries(messagesData)
           .map(([key, value]) => ({
             ...value,
@@ -52,7 +52,7 @@ function Direct({data}) {
             isYou: value.from === userid,
           }))
           .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        console.log('messagesList', messagesList);
+        
         setMessages(messagesList);
       }
     }
@@ -76,9 +76,9 @@ function Direct({data}) {
     );
     onValue(msgQuery, (snapshot) => {
       const messagesData = snapshot.val();
-      console.log('messagesData', messagesData);
+      
       const lastMessage = messagesData[Object.keys(messagesData)[0]];
-      console.log('lastMessage', lastMessage);
+      
       setMessages((prev) => {
         if (lastMessage.from !== userid) {
           // if the last message is not from the user, add it to the messages

@@ -8,8 +8,6 @@ export async function POST(req) {
   const {receiver} = await req.json();
   const {email} = session.user;
   const sender = await getUserIdByEmail(email);
-  console.log('sender', sender);
-  console.log('receiver', receiver);
 
   // Fetch the current friend requests
   const friendRecord = await prisma.friends.findUnique({
@@ -30,7 +28,6 @@ export async function POST(req) {
     data: {requests: updatedRequests},
   });
 
-  console.log('Updated friend requests', updatedRequests);
 
   return NextResponse.json({message: 'Request rejected'}, {status: 200});
 }

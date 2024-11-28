@@ -19,7 +19,6 @@ function ProfileEdit({id}) {
         body: JSON.stringify({id, newImageURL: url}),
       });
       const data = await response.json();
-      console.log('data', data);
     }
     postImage();
   }, [url, id]);
@@ -42,7 +41,6 @@ function ProfileEdit({id}) {
         setUploadProgress(progress);
       },
       (error) => {
-        console.error('Upload error:', error);
         setIsUploading(false);
       },
       () => {

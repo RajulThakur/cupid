@@ -1,7 +1,7 @@
 'use client';
 import FriendRequests from '@/app/_components/FriendRequests';
-import {useEffect, useState, useRef} from 'react';
-import {BASE_URL} from '@/app/_helper/Config';
+import { BASE_URL } from '@/app/_helper/Config';
+import { useEffect, useRef, useState } from 'react';
 export default function RequestPage() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -28,7 +28,6 @@ export default function SignInForm() {
       const password = event.target.password.value;
       await signInSchema.parseAsync({email, password});
       const response = await handleSignIn({email, password});
-      console.log('response', response);
       if (response) {
         router.push('/direct/menu/inbox');
       }

@@ -8,8 +8,6 @@ export default async function handleSignIn(formData) {
       email: formData.email,
       password: formData.password,
     });
-    console.log('parsedEmail', email);
-    console.log('parsedPassword', password);
     //check if email exits in the database
     const user = await prisma.user.findUnique({
       where: {email},

@@ -41,6 +41,5 @@ export async function GET(req) {
       },
     },
   });
-  console.log(friendUsers);
   return NextResponse.json({friends: friendUsers});
 }

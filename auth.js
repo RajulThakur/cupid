@@ -15,7 +15,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          console.log('credentials', credentials);
           if (!credentials?.email || !credentials?.password) {
             throw new Error('Provide both email and password');
           }
@@ -25,6 +24,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             password: credentials.password,
           });
 
+          
           const user = await prisma.user.findUnique({
             where: {email},
             select: {
@@ -37,7 +37,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
               profileImage: true,
             },
           });
-          
           if (!user) {
             throw new Error('Invalid Email or password');
           }
@@ -54,7 +53,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
           }
           return user;
         } catch (error) {
-          console.log('Auth error:', error);
           throw error;
         }
       },

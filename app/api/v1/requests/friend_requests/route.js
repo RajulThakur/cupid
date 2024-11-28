@@ -11,7 +11,6 @@ export async function GET(req) {
   const {email} = user;
 
   const id = await getUserIdByEmail(email);
-  console.log(id);
   const friendRecord = await prisma.friends.findUnique({
     where: {
       userId: id,
