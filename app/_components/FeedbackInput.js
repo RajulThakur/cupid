@@ -43,10 +43,7 @@ function FeedbackInput({name, label, errorMsg = '', setError, setErrorMsg}) {
   return (
     <TextField
       error={!isAvailable || errorMsg?._errors?.[0]}
-      helperText={
-        (!isAvailable ? `${label} is already taken` : '') ||
-        errorMsg?._errors?.[0]
-      }
+      helperText={(!isAvailable ? `${label} is already taken` : '') || errorMsg?._errors?.[0]}
       value={value}
       onChange={handleChange}
       label={label}

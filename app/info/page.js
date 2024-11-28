@@ -41,7 +41,8 @@ function SignupPage({searchParams}) {
               bio,
             });
             await handleInfo({firstName, lastName, gender, relationship, bio});
-            router.push(`/lock?id=${searchParams.id}&setup=true`);
+            // router.push(`/lock?id=${searchParams.id}&setup=true`);
+            router.push('/');
           } catch (error) {
             setError(true);
             setErrorMsg(error?.format() || error.message);
@@ -57,14 +58,14 @@ function SignupPage({searchParams}) {
           <InputField
             label="First Name"
             name="firstName"
-            ErrMessage={errorMsg}
+            ErrorMsg={errorMsg}
             disabled={isSubmitting}
             handleChange={handleChange}
           />
           <InputField
             label="Last Name"
             name="lastName"
-            ErrMessage={errorMsg}
+            ErrorMsg={errorMsg}
             disabled={isSubmitting}
             handleChange={handleChange}
           />
@@ -75,13 +76,13 @@ function SignupPage({searchParams}) {
         <RelSelect
           disabled={isSubmitting}
           isError={errorMsg}
-          ErrMessage={errorMsg}
+          ErrorMsg={errorMsg}
           setErrorMsg={setErrorMsg}
         />
         <InputField
           label="Bio"
           name="bio"
-          ErrMessage={errorMsg}
+          ErrorMsg={errorMsg}
           handleChange={handleChange}
           multiline
           rows={4}

@@ -1,11 +1,18 @@
 'use client';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, FormHelperText } from '@mui/material';
-import { useState } from 'react';
+import {Visibility, VisibilityOff} from '@mui/icons-material';
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  FormHelperText,
+} from '@mui/material';
+import {useState} from 'react';
 
-function PasswordField({ name, errorMsg, setError, setErrorMsg }) {
+function PasswordField({name, ErrorMsg, handleChange}) {
   const [showPassword, setShowPassword] = useState(false);
-  const error = !!errorMsg?._errors?.[0];
+  const error = !!ErrorMsg?.[name]?._errors?.[0];
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show);
   };
@@ -14,17 +21,11 @@ function PasswordField({ name, errorMsg, setError, setErrorMsg }) {
     event.preventDefault();
   };
 
-  const handleChange = (e) => {
-    setErrorMsg((prev) => ({...prev, [name]: null}));
-    setError(false);
-  };
-
   return (
     <FormControl
       fullWidth
       variant="outlined"
-      error={error}
-    >
+      error={error}>
       <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
       <OutlinedInput
         id="outlined-adornment-password"
@@ -37,15 +38,14 @@ function PasswordField({ name, errorMsg, setError, setErrorMsg }) {
               aria-label="toggle password visibility"
               onClick={handleClickShowPassword}
               onMouseDown={handleMouseDownPassword}
-              edge="end"
-            >
+              edge="end">
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>
           </InputAdornment>
         }
         label="Password"
       />
-      {error && <FormHelperText>{errorMsg?._errors?.[0]}</FormHelperText>}
+      {error && <FormHelperText>{ErrorMsg?.[name]?._errors?.[0]}</FormHelperText>}
     </FormControl>
   );
 }

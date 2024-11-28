@@ -4,8 +4,8 @@ import {auth} from '@/auth';
 import {getUserIdByEmail} from '@/app/_lib/data-service';
 import prisma from '@/prisma/prisma';
 import {NextResponse} from 'next/server';
-import { database } from '@/app/_firebase/firebase';
-import { ref, set } from 'firebase/database';
+import {database} from '@/app/_firebase/firebase';
+import {ref, set} from 'firebase/database';
 
 export async function POST(req) {
   const session = await auth();
@@ -35,7 +35,7 @@ export async function POST(req) {
   if (sender < receiver) {
     [userA, userB] = [userB, userA];
   }
-  console.log('userA', userA, 'userB', userB); 
+  console.log('userA', userA, 'userB', userB);
 
   const megRef = ref(database, `/${userA}_${userB}`);
   await set(megRef, {

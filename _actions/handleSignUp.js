@@ -19,6 +19,10 @@ export default async function handleSignUp(formData) {
       where: {email: Email},
       select: {email: true, isCompleted: true},
     });
+    //check if the user is already in the database
+    if (user && user.isCompleted) {
+      throw new Error('Email already in use');
+    }
     //check if the isCompleted is false
     if (user && !user.isCompleted) {
       const updatedUser = await prisma.user.update({
@@ -57,6 +61,6 @@ export default async function handleSignUp(formData) {
     });
     return newUser.id;
   } catch (error) {
-    throw new Error(error.message);
+    return error;
   }
 }

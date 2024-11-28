@@ -17,14 +17,16 @@ const status = [
   'In an Open Relationship',
 ];
 
-export default function RelSelect({ disabled, isError, ErrMessage, setErrorMsg }) {
+export default function RelSelect({disabled, isError, ErrorMsg, setErrorMsg}) {
   const [relStatus, setRelStatus] = React.useState('');
   const handleChange = (event) => {
     setRelStatus(event.target.value);
-    setErrorMsg({ ...isError, relationship: '' });
+    setErrorMsg({...isError, relationship: ''});
   };
   return (
-    <FormControl fullWidth error={Boolean(isError?.relationship)}>
+    <FormControl
+      fullWidth
+      error={Boolean(isError?.relationship)}>
       <InputLabel id="relationship-label">Relationship</InputLabel>
       <Select
         labelId="relationship-label"
@@ -33,8 +35,7 @@ export default function RelSelect({ disabled, isError, ErrMessage, setErrorMsg }
         label="Relationship"
         name="relationshipStatus"
         onChange={handleChange}
-        disabled={disabled}
-      >
+        disabled={disabled}>
         {status.map((relsta) => (
           <MenuItem
             value={relsta}
@@ -43,9 +44,7 @@ export default function RelSelect({ disabled, isError, ErrMessage, setErrorMsg }
           </MenuItem>
         ))}
       </Select>
-      {isError?.relationship && (
-        <FormHelperText>{ErrMessage?.relationship?._errors}</FormHelperText>
-      )}
+      {isError?.relationship && <FormHelperText>{ErrorMsg?.relationship?._errors}</FormHelperText>}
     </FormControl>
   );
 }

@@ -10,7 +10,7 @@ function SignupPage() {
   return (
     <div className="flex h-dvh flex-col items-center justify-center px-3 py-3">
       <SignUpNav heading="Signup" />
-        <SignupForm />
+      <SignupForm />
     </div>
   );
 }

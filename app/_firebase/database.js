@@ -1,5 +1,5 @@
-import { database } from './firebase';
-import { ref, set, get, update, remove } from 'firebase/database';
+import {database} from './firebase';
+import {ref, set, get, update, remove} from 'firebase/database';
 
 // Database utility functions
 export const writeData = async (path, data) => {

@@ -9,4 +9,4 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-export default firebaseConfig; 
+export default firebaseConfig;

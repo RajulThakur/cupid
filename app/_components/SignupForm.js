@@ -1,20 +1,24 @@
 'use client';
+import handleSignUp from '@/_actions/handleSignUp';
 import {Checkbox} from '@mui/material';
-import InputField from './InputField';
 import bcrypt from 'bcryptjs';
+import {useRouter} from 'next/navigation';
+import {useState} from 'react';
+import {ZodError} from 'zod';
+import {signUpSchema} from '../_lib/zod';
+import FeedbackInput from './FeedbackInput';
 import LogoBold from './LogoBold';
 import PasswordField from './PasswordField';
-import FeedbackInput from './FeedbackInput';
-import {useState} from 'react';
-import handleSignUp from '@/_actions/handleSignUp';
-import {useRouter} from 'next/navigation';
-import {signUpSchema} from '../_lib/zod';
 
 export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isError, setIsError] = useState(false);
   const router = useRouter();
+  const handleChange = (e) => {
+    setErrorMsg({...errorMsg, [e.target.name]: ''});
+    setIsError(false);
+  };
   const onSubmit = async (event) => {
     try {
       event.preventDefault();
@@ -31,9 +35,14 @@ export default function SignupForm() {
       const userid = await handleSignUp({email, username, password: hashedPassword});
       router.push(`/info?id=${userid}`);
     } catch (error) {
-      console.log(error?.format() || error.message);
+      let errorObj = {};
+      if (error instanceof ZodError) {
+        errorObj = {...error?.format(), type: 'zod'};
+      } else {
+        errorObj = {...error, type: 'error', message: error.message};
+      }
       setIsError(true);
-      setErrorMsg(error?.format() || error.message);
+      setErrorMsg(errorObj);
     } finally {
       setIsLoading(false);
     }
@@ -71,13 +80,17 @@ export default function SignupForm() {
           label="Username"
           name="username"
         />
-
+        <div className="flex flex-col gap-1"></div>
         <PasswordField
           name="password"
-          errorMsg={errorMsg?.password}
-          setErrorMsg={setErrorMsg}
-          setError={setIsError}
+          ErrorMsg={errorMsg}
+          handleChange={handleChange}
         />
+        {isError && errorMsg?.type === 'error' && (
+          <div className="mt-1 rounded-md bg-red-100 px-2 py-1 text-sm text-red-500">
+            {errorMsg.message}
+          </div>
+        )}
         <div className="self-start">
           <Checkbox
             aria-label="Checkbox"

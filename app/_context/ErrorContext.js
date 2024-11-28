@@ -5,8 +5,7 @@ function ErrorContextProvider({children}) {
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   return (
-    <ErrorContext.Provider
-      value={{error, setError, errorMsg, setErrorMsg}}>
+    <ErrorContext.Provider value={{error, setError, errorMsg, setErrorMsg}}>
       {children}
     </ErrorContext.Provider>
   );
