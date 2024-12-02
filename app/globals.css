@@ -71,6 +71,19 @@ body {
   background-color: rgba(192, 247, 166, 0.7);
 }
 
+@keyframes beat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.069);
+  }
+}
+
+.animate-beat {
+  animation: beat 1.618s infinite;
+}
+
 @keyframes ripple {
   to {
     transform: scale(4);

@@ -15,7 +15,7 @@ function DirectMessagesPage() {
     fetchFriends();
   }, []);
   return (
-    <div className={`flex flex-col gap-2 ${!friends ? 'overflow-y-hidden' : ''}`}>
+    <div className={`flex flex-col max-h-[calc(100dvh-140px)] gap-2 ${!friends ? 'overflow-y-hidden' : ''}`}>
       {!friends
         ? Array.from({length: 7}).map((_, index) => <InboxMsgContainerSkeleton key={index} />)
         : friends.map((friend) => (

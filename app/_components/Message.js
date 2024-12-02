@@ -1,4 +1,5 @@
 import AudioComponent from './AudioComponent';
+import EmojiComponent from './EmojiComponent';
 import ImageComponent from './ImageComponent';
 import TextComponent from './TextComponent';
 function MessageComponent({
@@ -10,17 +11,18 @@ function MessageComponent({
   yourProfileImage,
   friendProfileImage,
 }) {
-  if (msgType === 'image') {
-    return (
+  switch (msgType) {
+    case 'image':
+      return (
       <ImageComponent
         message={message}
         yourProfileImage={yourProfileImage}
         friendProfileImage={friendProfileImage}
       />
-    );
-  } else if (msgType === 'text') {
-    return (
-      <TextComponent
+      );
+    case 'text':
+      return (
+        <TextComponent
         message={message}
         isYou={isYou}
         user={user}
@@ -29,14 +31,25 @@ function MessageComponent({
         friendProfileImage={friendProfileImage}
       />
     );
-  } else if (msgType === 'audio') {
-    return (
-      <AudioComponent
-        message={message}
+    case 'audio':
+      return (
+        <AudioComponent
+          message={message}
         yourProfileImage={yourProfileImage}
         friendProfileImage={friendProfileImage}
       />
-    );
+      );
+    case 'emoji':
+      return (
+        <EmojiComponent
+          message={message}
+          yourProfileImage={yourProfileImage}
+          friendProfileImage={friendProfileImage}
+          isYou={isYou}
+          user={user}
+          date={date}
+        />
+      );
   }
 }
 export default MessageComponent;

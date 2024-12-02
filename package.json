@@ -31,6 +31,7 @@
     "postinstall": "^0.7.5",
     "react": "^18",
     "react-dom": "^18",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {

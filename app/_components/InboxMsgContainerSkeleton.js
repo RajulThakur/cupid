@@ -1,6 +1,6 @@
 export default function InboxMsgContainerSkeleton() {
   return (
-    <div className="flex flex-col">
+    <div className="flex h-auto flex-col">
       <section className="flex items-center gap-4 rounded-lg bg-accent-tint-900 px-4 py-5">
         <div
           className="animate-pulse rounded-full bg-accent-tint-200"

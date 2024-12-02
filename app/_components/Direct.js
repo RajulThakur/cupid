@@ -14,6 +14,8 @@ import {
 import {useEffect, useRef, useState} from 'react';
 import {database} from '../_firebase/firebase';
 import MessageComponent from './Message';
+const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+import isOnlyEmojis from '../_helper/isOnlyEmoji';
 
 function Direct({data}) {
   const {userid, myusername, friendusername, name, to} = data;
@@ -41,7 +43,7 @@ function Direct({data}) {
       const snapshot = await get(messagesQuery);
       if (snapshot.exists()) {
         const messagesData = snapshot.val();
-        
+
         const messagesList = Object.entries(messagesData)
           .map(([key, value]) => ({
             ...value,
@@ -52,7 +54,7 @@ function Direct({data}) {
             isYou: value.from === userid,
           }))
           .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        
+
         setMessages(messagesList);
       }
     }
@@ -76,9 +78,9 @@ function Direct({data}) {
     );
     onValue(msgQuery, (snapshot) => {
       const messagesData = snapshot.val();
-      
+
       const lastMessage = messagesData[Object.keys(messagesData)[0]];
-      
+
       setMessages((prev) => {
         if (lastMessage.from !== userid) {
           // if the last message is not from the user, add it to the messages
@@ -100,8 +102,23 @@ function Direct({data}) {
       off(msgQuery);
     };
   }, [userA, userB, userid]);
+  useEffect(() => {
+    const handleResize = () => {
+      const newHeight = window.visualViewport?.height || window.innerHeight;
+      setViewportHeight(newHeight);
+    };
 
+    window.visualViewport?.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize); // Fallback for unsupported browsers
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   async function handleSubmit() {
+    const isOnlyEmoji = isOnlyEmojis(value);
+    console.log(isOnlyEmoji);
     if (value.trim()) {
       setMessages([
         ...messages,
@@ -110,13 +127,13 @@ function Direct({data}) {
           isYou: true,
           from: userid,
           createdAt: new Date(),
-          msgType: 'text',
+          msgType: isOnlyEmoji ? 'emoji' : 'text',
         },
       ]);
       setValue('');
       push(messagesRef, {
         from: userid,
-        msgType: 'text',
+        msgType: isOnlyEmoji ? 'emoji' : 'text',
         value: value,
         createdAt: new Date().toISOString(),
       });
@@ -133,8 +150,8 @@ function Direct({data}) {
   };
 
   return (
-    <div className="flex h-svh flex-col px-4 py-4">
-      <div className="flex flex-1 flex-col gap-2 overflow-y-scroll pr-6 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2">
+    <div className="px-1 py-2">
+      <div className="scrollbar-hide max-h-[calc(100dvh-56px)] flex flex-1 snap-y flex-col gap-2 overflow-y-scroll scroll-smooth md:pr-6">
         {messages.map((message, index) => (
           <MessageComponent
             key={message._id || index}
@@ -150,7 +167,7 @@ function Direct({data}) {
         <div ref={bottomAuto} />
       </div>
 
-      <div className="flex items-center justify-between gap-4 rounded-full bg-white px-4 py-2 shadow-sm">
+      <div className="fixed bottom-0 left-0 right-0 flex items-center justify-between gap-4 rounded-full bg-white px-4 py-2 shadow-sm">
         <textarea
           onChange={handleChange}
           value={value}

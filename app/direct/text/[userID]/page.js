@@ -25,16 +25,14 @@ export default async function Page({params}) {
     data: {isOnline: true},
   });
   return (
-    <div>
-      <Direct
-        data={{
-          userid: user.id,
-          myusername: user.username,
-          friendusername: friend.username,
-          name: `${friend.firstName} ${friend.lastName}`,
-          to: params.userID,
-        }}
-      />
-    </div>
+    <Direct
+      data={{
+        userid: user.id,
+        myusername: user.username,
+        friendusername: friend.username,
+        name: `${friend.firstName} ${friend.lastName}`,
+        to: params.userID,
+      }}
+    />
   );
 }
