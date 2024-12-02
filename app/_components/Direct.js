@@ -14,7 +14,6 @@ import {
 import {useEffect, useRef, useState} from 'react';
 import {database} from '../_firebase/firebase';
 import MessageComponent from './Message';
-const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 import isOnlyEmojis from '../_helper/isOnlyEmoji';
 
 function Direct({data}) {
