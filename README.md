@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Cupid - Real-Time Chat Application
+
+Cupid is a modern real-time chat application built with Next.js, Firebase, and Material-UI. It provides a seamless messaging experience with features like emoji support, real-time message updates, and friend requests.
+
+## Features
+
+- 💬 Real-time messaging
+- 👥 Friend requests system  
+- 🔐 Secure authentication
+- 😊 Emoji message support
+- 📱 Responsive design
+- 🖼️ Profile image upload
+- 🔍 User search functionality
+- 💫 Smooth animations and transitions
+
+## Tech Stack
+
+- **Frontend Framework**: Next.js 14 (App Router)
+- **Database & Real-time**: Firebase Realtime Database
+- **Storage**: Firebase Storage
+- **Authentication**: NextAuth.js
+- **UI Components**: Material-UI (MUI)
+- **Styling**: Tailwind CSS
+- **Form Validation**: Zod
+- **Deployment**: [Your deployment platform]
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+bash-
+git clone https://github.com/yourusername/cupid-chat.git
 
-```bash
+2. Install dependencies:
+
+bash
+cd cupid-chat
+npm install
+
+
+3. Set up environment variables:
+Create a `.env.local` file in the root directory with the following variables:
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+NEXT_PUBLIC_BASE_URL=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+
+4. Run the development server:
+bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Project Structure
+cupid-chat/
+├── app/
+│ ├── components/ # Reusable components
+│ ├── firebase/ # Firebase configuration
+│ ├── helper/ # Helper functions
+│ ├── hooks/ # Custom React hooks
+│ ├── lib/ # Utility functions
+│ └── actions/ # Server actions
+├── public/ # Static assets
+└── ...
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Key Features Explained
 
-To learn more about Next.js, take a look at the following resources:
+### Real-time Messaging
+- Messages are delivered instantly using Firebase Realtime Database
+- Support for text and emoji messages
+- Message history persistence
+- Read receipts (coming soon)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Authentication
+- Secure email/password authentication
+- Social authentication (coming soon)
+- Protected routes and API endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### User Experience
+- Mobile-responsive design
+- Keyboard-aware input on mobile devices
+- Smooth animations and transitions
+- Intuitive user interface
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Acknowledgments
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Next.js](https://nextjs.org/)
+- [Firebase](https://firebase.google.com/)
+- [Material-UI](https://mui.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
