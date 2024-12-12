@@ -21,46 +21,42 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
         password: {label: 'Password', type: 'password'},
       },
       authorize: async (credentials) => {
-        try {
-          if (!credentials?.email || !credentials?.password) {
-            throw new EmptyLoginError();
-          }
-
-          const {email, password} = await signInSchema.parseAsync({
-            email: credentials.email,
-            password: credentials.password,
-          });
-
-          const user = await prisma.user.findUnique({
-            where: {email},
-            select: {
-              id: true,
-              email: true,
-              password: true,
-              isCompleted: true,
-              firstName: true,
-              lastName: true,
-              profileImage: true,
-            },
-          });
-          if (!user) {
-            throw new InvalidLoginError();
-          }
-
-          if (!user.isCompleted) {
-            throw new Error('User not completed');
-          }
-          user.image = user.profileImage;
-          user.name = `${user.firstName} ${user.lastName}`;
-          const passwordMatch = await bcrypt.compare(password, user.password);
-
-          if (!passwordMatch) {
-            throw new InvalidLoginError();
-          }
-          return user;
-        } catch (error) {
-          throw error;
+        if (!credentials?.email || !credentials?.password) {
+          throw new EmptyLoginError();
         }
+
+        const {email, password} = await signInSchema.parseAsync({
+          email: credentials.email,
+          password: credentials.password,
+        });
+
+        const user = await prisma.user.findUnique({
+          where: {email},
+          select: {
+            id: true,
+            email: true,
+            password: true,
+            isCompleted: true,
+            firstName: true,
+            lastName: true,
+            profileImage: true,
+          },
+        });
+        if (!user) {
+          throw new InvalidLoginError();
+        }
+
+        if (!user.isCompleted) {
+          throw new Error('User not completed');
+        }
+        user.image = user.profileImage;
+        user.name = `${user.firstName} ${user.lastName}`;
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+          throw new InvalidLoginError();
+        }
+        return user;
       },
     }),
   ],
