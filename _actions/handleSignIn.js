@@ -22,8 +22,7 @@ export default async function handleSignIn(formData) {
       redirect: false,
     });
     return response;
-
   } catch (error) {
-    throw new Error(error?.code || error.message);
+    return {sucess: false, error: error.code || error.message};
   }
 }

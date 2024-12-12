@@ -8,7 +8,7 @@ import LogoBold from './LogoBold';
 import PasswordField from './PasswordField';
 import handleSignIn from '@/_actions/handleSignIn';
 import {ZodError} from 'zod';
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 export default function SignInForm() {
   const {pending} = useFormStatus();
@@ -28,6 +28,8 @@ export default function SignInForm() {
       const password = event.target.password.value;
       await signInSchema.parseAsync({email, password});
       const response = await handleSignIn({email, password});
+      console.log("response",response)
+      if (!response.success) throw new Error(response.error);
       if (response) {
         router.push('/direct/menu/inbox');
       }
