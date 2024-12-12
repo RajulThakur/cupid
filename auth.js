@@ -1,9 +1,16 @@
 import {PrismaAdapter} from '@auth/prisma-adapter';
 import bcrypt from 'bcryptjs';
-import NextAuth from 'next-auth';
+import NextAuth, {CredentialsSignin} from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import prisma from './prisma/prisma';
 import {signInSchema} from './app/_lib/zod';
+
+class InvalidLoginError extends CredentialsSignin {
+  code = 'Invalid email or password';
+}
+class EmptyLoginError extends CredentialsSignin {
+  code = 'Provide both email and password';
+}
 
 export const {handlers, signIn, signOut, auth} = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -16,7 +23,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
       authorize: async (credentials) => {
         try {
           if (!credentials?.email || !credentials?.password) {
-            throw new Error('Provide both email and password');
+            throw new EmptyLoginError();
           }
 
           const {email, password} = await signInSchema.parseAsync({
@@ -24,7 +31,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             password: credentials.password,
           });
 
-          
           const user = await prisma.user.findUnique({
             where: {email},
             select: {
@@ -38,7 +44,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             },
           });
           if (!user) {
-            throw new Error('Invalid Email or password');
+            throw new InvalidLoginError();
           }
 
           if (!user.isCompleted) {
@@ -49,7 +55,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
           const passwordMatch = await bcrypt.compare(password, user.password);
 
           if (!passwordMatch) {
-            throw new Error('Invalid Email or password');
+            throw new InvalidLoginError();
           }
           return user;
         } catch (error) {

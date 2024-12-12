@@ -101,20 +101,20 @@ function Direct({data}) {
       off(msgQuery);
     };
   }, [userA, userB, userid]);
-  useEffect(() => {
-    const handleResize = () => {
-      const newHeight = window.visualViewport?.height || window.innerHeight;
-      setViewportHeight(newHeight);
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     const newHeight = window.visualViewport?.height || window.innerHeight;
+  //     setViewportHeight(newHeight);
+  //   };
 
-    window.visualViewport?.addEventListener('resize', handleResize);
-    window.addEventListener('resize', handleResize); // Fallback for unsupported browsers
+  //   window.visualViewport?.addEventListener('resize', handleResize);
+  //   window.addEventListener('resize', handleResize); // Fallback for unsupported browsers
 
-    return () => {
-      window.visualViewport?.removeEventListener('resize', handleResize);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.visualViewport?.removeEventListener('resize', handleResize);
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, []);
   async function handleSubmit() {
     const isOnlyEmoji = isOnlyEmojis(value);
     console.log(isOnlyEmoji);

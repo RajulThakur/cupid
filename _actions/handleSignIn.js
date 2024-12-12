@@ -24,6 +24,6 @@ export default async function handleSignIn(formData) {
     return response;
 
   } catch (error) {
-    throw new Error(error?.cause?.err || error.message);
+    throw new Error(error?.code || error.message);
   }
 }
