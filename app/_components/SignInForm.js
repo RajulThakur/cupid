@@ -28,9 +28,9 @@ export default function SignInForm() {
       const password = event.target.password.value;
       await signInSchema.parseAsync({email, password});
       const response = await handleSignIn({email, password});
-      console.log("response",response)
-      if (!response.success) throw new Error(response.error);
-      if (response) {
+      if (!response.success) {
+        throw new Error(response.error);
+      } else {
         router.push('/direct/menu/inbox');
       }
     } catch (error) {
