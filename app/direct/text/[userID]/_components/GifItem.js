@@ -10,13 +10,14 @@ export default function GifItem({gif}) {
   const setMessages = useSetRecoilState(MessageState);
   const {messagesRef, userID} = useUserIDContext();
   const nanogif = gif.media_formats.nanogif.url;
-  const largeGif = gif.media_formats.tinygif.url;
+  const tinyGif = gif.media_formats.tinygif.url;
+  const mediumGif = gif.media_formats.gif.url;
   async function handleGifClick() {
     setMessages((messages) => [
       ...messages,
       {
         id: Date.now(),
-        message: largeGif,
+        message: mediumGif,
         isYou: true,
         from: userID,
         createdAt: new Date(),
@@ -26,7 +27,7 @@ export default function GifItem({gif}) {
     push(messagesRef, {
       from: userID,
       msgType: 'gif',
-      value: largeGif,
+      value: mediumGif,
       createdAt: new Date().toISOString(),
     });
   }
