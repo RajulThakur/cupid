@@ -56,7 +56,7 @@ function ProfileEdit({id}) {
     <div>
       <div className="relative h-32 w-32">
         {url ? (
-          <div className="h-32 w-32 overflow-hidden relative">
+          <div className="relative h-32 w-32 overflow-hidden">
             <Image
               className="rounded-full object-cover"
               fill

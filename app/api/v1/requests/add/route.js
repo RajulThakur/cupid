@@ -1,9 +1,9 @@
 'use server';
 
-import { getUserIdByEmail } from '@/app/_lib/data-service';
-import { auth } from '@/auth';
+import {getUserIdByEmail} from '@/app/_lib/data-service';
+import {auth} from '@/auth';
 import prisma from '@/prisma/prisma';
-import { NextResponse } from 'next/server';
+import {NextResponse} from 'next/server';
 
 export async function POST(req) {
   const session = await auth();
@@ -23,7 +23,6 @@ export async function POST(req) {
     where: {userId: receiver},
     select: {requests: true},
   });
-
 
   if (!receiverData) {
     throw new Error('Receiver not found in friends table');

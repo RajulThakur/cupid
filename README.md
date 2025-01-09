@@ -107,5 +107,3 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
 - `npm run generate` - Generate Prisma client
-
-

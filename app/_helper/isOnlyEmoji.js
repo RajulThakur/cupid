@@ -5,4 +5,3 @@ function isOnlyEmojis(text) {
 }
 
 export default isOnlyEmojis;
-  

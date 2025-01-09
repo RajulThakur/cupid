@@ -2,11 +2,11 @@
 import {CheckRounded, CloseRounded} from '@mui/icons-material';
 import {Avatar} from '@mui/material';
 import {BASE_URL} from '../_helper/Config';
-import { useSession } from 'next-auth/react';
-import { getUserIdByEmail } from '../_lib/data-service';
-import { ref, set } from 'firebase/database';
-import { database } from '../_firebase/firebase';
-import { useState } from 'react';
+import {useSession} from 'next-auth/react';
+import {getUserIdByEmail} from '../_lib/data-service';
+import {ref, set} from 'firebase/database';
+import {database} from '../_firebase/firebase';
+import {useState} from 'react';
 function FriendRequest({request, setRequests, requests, loading, setLoading}) {
   const session = useSession();
   const email = session.data?.user.email;
@@ -54,8 +54,13 @@ function FriendRequest({request, setRequests, requests, loading, setLoading}) {
       <button
         className="rounded-md bg-accent-tint-600 px-2 py-1 text-base font-bold tracking-wider text-accent-shade-800 hover:bg-accent-tint-400"
         onClick={() => handleAccept(request.id)}>
-        {loading ? 'Loading...' :
-          <CheckRounded sx={{fontSize: '1.2rem', strokeWidth: '0.1rem', stroke: 'rgb(96,124,83)'}} />}  
+        {loading ? (
+          'Loading...'
+        ) : (
+          <CheckRounded
+            sx={{fontSize: '1.2rem', strokeWidth: '0.1rem', stroke: 'rgb(96,124,83)'}}
+          />
+        )}
       </button>
       <button
         className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"

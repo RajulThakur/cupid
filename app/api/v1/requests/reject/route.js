@@ -28,6 +28,5 @@ export async function POST(req) {
     data: {requests: updatedRequests},
   });
 
-
   return NextResponse.json({message: 'Request rejected'}, {status: 200});
 }
