@@ -11,7 +11,7 @@ export default function GifItem({gif}) {
   const {messagesRef, userID} = useUserIDContext();
   const nanogif = gif.media_formats.nanogif.url;
   const tinyGif = gif.media_formats.tinygif.url;
-  const mediumGif = gif.media_formats.gif.url;
+  const mediumGif = gif.media_formats.mediumgif.url;
   async function handleGifClick() {
     setMessages((messages) => [
       ...messages,
