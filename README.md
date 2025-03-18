@@ -9,9 +9,8 @@ A real-time messaging application built with Next.js, Firebase, and Prisma.
 - 👥 Friend request system
 - 🎨 Modern UI with Material UI and Tailwind CSS
 - 📱 Responsive design
-- 🔒 PIN-based security layer
 - 🖼️ Profile image upload support
-- 🚀 Optimized with Vercel Analytics and Speed Insights
+- 🎤 Audio Recording, Gif
 
 ## Tech Stack
 
